@@ -1,0 +1,110 @@
+<%-- <%@ page trimDirectiveWhitespaces="true" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="template" tagdir="/WEB-INF/tags/desktop/template" %>
+<%@ taglib prefix="theme" tagdir="/WEB-INF/tags/shared/theme" %>
+<%@ taglib prefix="formElement" tagdir="/WEB-INF/tags/desktop/formElement"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="cms" uri="http://hybris.com/tld/cmstags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="common" tagdir="/WEB-INF/tags/desktop/common" %>
+<%@ taglib prefix="breadcrumb" tagdir="/WEB-INF/tags/desktop/nav/breadcrumb" %>
+<%@ taglib prefix="company" tagdir="/WEB-INF/tags/addons/commerceorgaddon/desktop/company" %>
+<spring:url value="/my-company/organization-management/manage-units/disable"
+			var="disableUrl">
+	<spring:param name="unit" value="${unit.uid}"/>
+</spring:url>
+<spring:url value="/my-company/organization-management/manage-units/details"
+			var="cancelUrl">
+	<spring:param name="unit" value="${unit.uid}"/>
+</spring:url>
+
+<template:page pageTitle="${pageTitle}">
+	<div id="globalMessages">
+		<common:globalMessages/>
+	</div>
+	<company:myCompanyNav selected="units"/>
+	<div class="column companyContentPane clearfix">
+		<cms:pageSlot position="TopContent" var="feature" element="div" class="span-20 wide-content-slot cms_disp-img_slot">
+			<cms:component component="${feature}"/>
+		</cms:pageSlot>							
+		<div class="headline"><spring:theme code="text.company.manage.units.unit.disable" text="Confirm Disable" arguments="${unit.uid}"/></div>
+		<div class="description"><spring:theme code="text.company.manage.units.disableUnit.confirmation" text="Doing this will disable disable unit {0} and all it descendent Units as well as all related Users, Budgets and Cost Centers. Do you want to proceed?" arguments="${unit.uid}"/></div>	
+		<form:form action="${disableUrl}">
+			<a href="${cancelUrl}" class="button no-confirm"><spring:theme code="b2bunit.no.button" text="No"/></a>
+			<button type="submit" class="confirm"><spring:theme code="b2bunit.yes.button" text="Yes"/></button>
+		</form:form>	
+	</div>
+</template:page>
+ --%>
+ 
+ <%@ page trimDirectiveWhitespaces="true"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="template" tagdir="/WEB-INF/tags/desktop/template"%>
+<%@ taglib prefix="theme" tagdir="/WEB-INF/tags/shared/theme"%>
+<%@ taglib prefix="nav" tagdir="/WEB-INF/tags/desktop/nav"%>
+<%@ taglib prefix="formUtil" tagdir="/WEB-INF/tags/desktop/formElement"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="cms" uri="http://hybris.com/tld/cmstags"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="common" tagdir="/WEB-INF/tags/desktop/common"%>
+<%@ taglib prefix="breadcrumb" tagdir="/WEB-INF/tags/desktop/nav/breadcrumb"%>
+
+<%@ taglib prefix="company" tagdir="/WEB-INF/tags/addons/commerceorgaddon/desktop/company" %>
+
+
+<spring:url value="/my-company/organization-management/manage-units/disable" var="disableUrl">
+	<spring:param name="unit" value="${unit.uid}" />
+</spring:url>
+<spring:url value="/my-company/organization-management/manage-units/details" var="cancelUrl">
+	<spring:param name="unit" value="${unit.uid}" />
+</spring:url>
+
+<template:page pageTitle="${pageTitle}">
+	<div id="breadcrumb" class="breadcrumb">
+		<breadcrumb:breadcrumb breadcrumbs="${breadcrumbs}" />
+	</div>
+	<div id="globalMessages">
+		<common:globalMessages />
+	</div>
+	<div class="main-content account-page">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-3">
+					<div class="sidebar sidebar-left">
+						<%-- <nav:myCompanyNav selected="units" /> --%>
+						<cms:pageSlot position="SideContent" var="feature" element="div" class="accountSideContentSlot">
+		                	<cms:component component="${feature}" element="div" class="clearfix" />
+		                </cms:pageSlot>
+					</div>
+				</div>
+				<div class="col-lg-9">
+					<cms:pageSlot position="TopContent" var="feature" element="div" class="span-20 wide-content-slot cms_disp-img_slot">
+						<cms:component component="${feature}" />
+					</cms:pageSlot>
+					<h2 class="subtitle">
+						<spring:theme code="text.company.manage.units.unit.disable" text="Confirm Disable" arguments="${unit.uid}" />
+					</h2>
+					<p>
+						<spring:theme code="text.company.manage.units.disableUnit.confirmation" text="Doing this will disable disable unit {0} and all it descendent
+										  Units as well as all related Users, Budgets and Cost Centers. Do you want
+										   to proceed?" arguments="${unit.uid}" />
+					</p>
+
+					<div style="display: block; clear: both;">
+						<form:form action="${disableUrl}" id="confirmDisableUnit">
+							<a href="${cancelUrl}" class="positive form no-confirm"><spring:theme code="b2bunit.no.button" text="No" /></a>
+							<button type="submit" class="positive form confirm">
+								<spring:theme code="b2bunit.yes.button" text="Yes" />
+							</button>
+						</form:form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</template:page>
+ 

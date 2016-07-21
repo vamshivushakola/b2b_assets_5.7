@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+ [y] hybris Platform
+
+ Copyright (c) 2000-2013 hybris AG
+ All rights reserved.
+
+ This software is the confidential and proprietary information of hybris
+ ("Confidential Information"). You shall not disclose such Confidential
+ Information and shall use it only in accordance with the terms of the
+ license agreement you entered into with hybris.
+
+  
+-->
+<!--
+	ATTENTION: This is just an example file. You have to edit it according to your needs.
+-->
+
+<items 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+			xsi:noNamespaceSchemaLocation="items.xsd">
+
+	<relations>
+		<relation code="B2BUnit2ProductB2BUnitLink" localized="false" generate="true" autocreate="true">
+			<sourceElement type="B2BUnit" qualifier="b2bunit" cardinality="one" />
+			<targetElement type="ProductB2BUnitLink" qualifier="productLinks" cardinality="many" />
+		</relation>
+		<relation code="Product2ProductB2BUnitLink" localized="false" generate="true" autocreate="true">
+			<sourceElement type="Product" qualifier="product" cardinality="one" />
+			<targetElement type="ProductB2BUnitLink" qualifier="b2bUnitLinks" cardinality="many" >
+				<modifiers partof="true"/>
+			</targetElement>
+		</relation>
+	</relations>
+
+	<itemtypes>
+		<itemtype code="ProductB2BUnitLink" autocreate="true" generate="true" jaloclass="com.generic.solrsearchrestriction.ProductB2BUnitLink">
+			<deployment table="ProductB2BUnitLink" typecode="30555"/>
+			<custom-properties>
+			   <!-- marking the type as synchronizing capable here: -->
+			   <property name="catalogItemType">
+			      <value>java.lang.Boolean.TRUE</value>
+			   </property>
+			
+			   <!-- define catalog version attribute here: -->
+			   <property name="catalogVersionAttributeQualifier">
+			      <value>"catalogVersion"</value>
+			   </property>
+			    
+			   <!-- define unique key attributes here; separate multiple attribute qualifiers by commas: -->
+			   <property name="uniqueKeyAttributeQualifier">
+			      <value>"product,b2bunit"</value>
+			   </property>
+			</custom-properties>
+			<attributes>
+				<attribute qualifier="isDisplayable" type="java.lang.Boolean">
+					<description>Information to display the right products to the client</description>
+					<persistence type="property" />
+					<defaultvalue>false</defaultvalue>
+					<modifiers />
+				</attribute>
+				<!-- Synching issue changes -->
+				<attribute qualifier="catalogVersion" type="CatalogVersion">
+   						<modifiers read="true" write="false" search="true" initial="true" optional="false"/>
+  		 				<persistence type="property"/>
+				</attribute>
+				
+			</attributes>
+		</itemtype>
+	</itemtypes>
+</items>

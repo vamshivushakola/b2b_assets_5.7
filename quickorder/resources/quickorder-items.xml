@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- [y] hybris Platform Copyright (c) 2000-2013 hybris AG All rights reserved. 
+	This software is the confidential and proprietary information of hybris ("Confidential 
+	Information"). You shall not disclose such Confidential Information and shall 
+	use it only in accordance with the terms of the license agreement you entered 
+	into with hybris. -->
+<!-- ATTENTION: This is just an example file. You have to edit it according 
+	to your needs. -->
+
+<items xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="items.xsd">
+
+	<itemtypes>
+
+		<itemtype code="QuickOrderComponent" extends="SimpleCMSComponent"
+			generate="true" autocreate="true"
+			jaloclass="com.capgemini.quickorder.cms.jalo.QuickOrderComponent">
+			<description>Represents the quick order component that can be used to order quickly.</description>
+			<attributes>
+				<attribute qualifier="numberRows" type="java.lang.Integer">
+					<persistence type="property" />
+					<defaultvalue>java.lang.Integer.valueOf(05)</defaultvalue>
+					<modifiers />
+					<description>Number of rows in the table.</description>
+				</attribute>
+				<attribute qualifier="minimumCharactersSearch" type="java.lang.Integer">
+					<persistence type="property" />
+					<defaultvalue>java.lang.Integer.valueOf(3)</defaultvalue>
+					<modifiers />
+					<description>Number of characters for auto-completion to start.</description>
+				</attribute>
+				<attribute qualifier="maximumResultsSearch" type="java.lang.Integer">
+					<persistence type="property" />
+					<defaultvalue>java.lang.Integer.valueOf(4)</defaultvalue>
+					<modifiers />
+					<description>Maximum number of results to display by auto-completion.</description>
+				</attribute>
+				<attribute qualifier="delaySearch" type="java.lang.Integer">
+					<persistence type="property" />
+					<defaultvalue>java.lang.Integer.valueOf(300)</defaultvalue>
+					<modifiers />
+					<description>Delay in milliseconds before displaying auto-completion results.</description>
+				</attribute>
+				<attribute qualifier="styleClass" type="java.lang.String">
+					<persistence type="property" />
+					<modifiers />
+					<description>CSS style class of this quick order component.</description>
+				</attribute>
+			</attributes>
+		</itemtype>
+
+		<itemtype code="CsvOrderComponent" extends="SimpleCMSComponent"
+			generate="true" autocreate="true"
+			jaloclass="com.capgemini.quickorder.cms.jalo.CsvOrderComponent">
+			<description>Represents the csv order component that can be used to order quickly.</description>
+			<attributes>			
+				<attribute qualifier="file" type="java.lang.String">
+					<persistence type="property" />					
+					<modifiers />
+					<description>To Store CSV file</description>
+				</attribute>
+			</attributes>
+		</itemtype>
+
+	</itemtypes>
+</items>

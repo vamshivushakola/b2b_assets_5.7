@@ -1,0 +1,13 @@
+# code ; owner ; company ; streetnumber ; streetname ; postalcode ; town ; country ; appartment ; building ; department ; district ; fax ; cellphone ; phone1 ; phone2 ; soldtoAddres ; shiptoAddress ; billtoAddress ; payerAddress ; firstname ; lastname ; email ; title ; remarks ; url ; visibleInAddressBook ; 
+pw_warehouse_s;Pronto;Company;849 East Commerce Street;;78205;San Antonio;US;;;;;;;;;;;;;;;;;;;1;
+pw_warehouse_e;Pronto;Company;100 7th Avenue;Brooklyn;11215;New York;US;;;;;;;;;;;;;;;;;;;1;
+pw_warehouse_w;Pronto;Company;1111 Newport Center Drive;;92660;Newport Beach;US;;;;;;;;;;;;;;;;;;;1;
+pw_warehouse_n;Rustic Retail;Company;179 Bellevue Square;;98004;Bellevue;US;;;;;;;;;;;;;;;;;;;1;
+b2bassets12;Services East;Company;;700 E 50th Street;10022;New York;US;;;;;;;;;;;;;Mingmei;Wang;mingmei.wang@rustic-hw.com;ms;;;1;
+b2bassets11;Rustic Retail;Company;;3000 Lombard Street;94123;San Francisco;US;;;;;;;;;;;;;Anil;Gupta;anil.gupta@rustic-hw.com;mr;;;1;
+b2bassets10;Rustic;Company;;999 South Wacker Drive;60606;Chicago;US;;;;;;;;;;;;;Akiro;Nakamura;akiro.nakamura@rustic-hw.com;mr;;;1;
+b2bassets14;Custom Retail;Company;;1000 Bagby Street;Texas;Houston;US;;;;;;;;;;;;;Carla;Torres;carla.torres@rustic-hw.com;ms;;;1;
+b2bassets13;Services West;Company;;3000 Canyon Lake Drive;90068;Los Angeles;US;;;;;;;;;;;;;Matheu;Silva;matheu.silva@rustic-hw.com;mr;;;1;
+b2bassets3;Pronto Services;Company;;11000 Bagby Street Houston;Texas;Houston;US;;;;;;;;;;;;;James;Bell;james.bell@Pronto-hw.com;mr;;;1;
+b2bassets1;Pronto;Company;;3000 Lombard Street;94123;San Francisco;US;;;;;;;;;;;;;Akiro;Nakamura;akiro.nakamura@pronto-hw.com;mr;;;1;
+b2bassets2;Pronto Goods;Company;;700 E 50th Street;10022;New York;US;;;;;;;;;;;;;Gi;Sun;gi.sun@pronto-hw.com;mr;;;1;

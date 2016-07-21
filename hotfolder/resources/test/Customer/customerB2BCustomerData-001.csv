@@ -1,0 +1,30 @@
+# uid ; description ; email ; name ; title ; B2BUnit ; sessionCurrency ; password ; 
+hanna.schmidt@rustic-hw.com;Approver A;hanna.schmidt@rustic-hw.com;Hanna Schmidt;ms;;USD;01b835b67287f37ac164760885e54668;Rustic, b2bapprovergroup
+matheu.silva@rustic-hw.com;Approver D;matheu.silva@rustic-hw.com;Matheu Silva;mr;;USD;484c60f2dc890afadc4e8417d9cdd5f5;Services West, b2bapprovergroup, b2bcustomergroup, b2bmanagergroup, standardPermissions
+linda.wolf@rustic-hw.com;Admin A;linda.wolf@rustic-hw.com;Linda Wolf;ms;;USD;c9878d27d61c5c5bc430283fd478c7c4;Rustic,b2badmingroup
+lars.bauer@rustic-hw.com;AdminB;lars.bauer@rustic-hw.com;Lars Bauer;mr;;USD;daf6e7ee985b6c7777baa53ea9fc2aa4;Rustic Services, b2badmingroup
+james.bell@rustic-hw.com;Approver B;james.bell@rustic-hw.com;James Bell;mr;;USD;d4d7dea22316fc8917a837e41d7d1851;Rustic Services, b2bapprovergroup
+mark.rivers@rustic-hw.com;Customer A;mark.rivers@rustic-hw.com;Mark Rivers;mr;;USD;2789e108a86711cede9e84d92b36f92d;Custom Retail, b2bcustomergroup, premiumPermissions
+carla.torres@rustic-hw.com;Approver C;carla.torres@rustic-hw.com;Carla Torres;ms;;USD;537d8c5c27fc6e693525385e06ba3897;Custom Retail, b2bapprovergroup
+mingmei.wang@rustic-hw.com;Approver E;mingmei.wang@rustic-hw.com;Mingmei Wang;ms;;USD;2d0ee2563f0c19b25af841391b3ce310;Services East, b2bapprovergroup, b2bcustomergroup
+william.hunter@rustic-hw.com;Customer C;william.hunter@rustic-hw.com;William Hunter;mr;;USD;cb803c6bef0abb9c8d4b871ad4dc78ad;Custom Retail, b2bcustomergroup, limitedPermissions, standardPermissions
+anthony.lombardi@rustic-hw.com;Customer B;anthony.lombardi@rustic-hw.com;Anthony Lombardi;mr;;USD;1b75d5e6436a9f4f8c93cf49fd190543;Custom Retail, b2bcustomergroup,limitedPermissions
+marie.dubois@rustic-hw.com;Customer D;marie.dubois@rustic-hw.com;Marie Dubois;ms;;USD;9d631b100bd422f02205d6bd77ae0bdb;Custom Retail, b2bcustomergroup,standardPermissions
+axel.krause@rustic-hw.com;Customer E;axel.krause@rustic-hw.com;Axel Krause;mr;;USD;f15d0057f24fef0c51615b8b029729b4;Custom Retail, b2bcustomergroup,standardPermissions
+alejandro.navarro@rustic-hw.com;Customer G;alejandro.navarro@rustic-hw.com;Alejandro Navarro;mr;;USD;77dd1d5be6ab80132acc20ade6e665a5;Services East, b2bcustomergroup,standardPermissions
+ulf.becker@rustic-hw.com;Customer F;ulf.becker@rustic-hw.com;Ulf Becker;mr;;USD;24e3ec899e9f1f85788524f284e3b3df;Services East, b2bcustomergroup,standardPermissions
+lucas.kowalski@rustic-hw.com;Customer H;lucas.kowalski@rustic-hw.com;Lucas Kowalski;mr;;USD;60cecf051e05a72e0a58176a714a3363;Services East, b2bcustomergroup,standardPermissions
+byung-soon.lee@rustic-hw.com;Customer I;byung-soon.lee@rustic-hw.com;Byung-soon Lee;ms;;USD;ef2e7571fe4508056ea64baf7fb78093;Services West, b2bcustomergroup,standardPermissions
+gi.sun@rustic-hw.com;Customer J;gi.sun@rustic-hw.com;Gi Sun;mr;;USD;9e0c54fd617a6fefe90caa8a37d9a09a;Services West, b2bcustomergroup,standardPermissions
+salome.levi@rustic-hw.com;Manager C;salome.levi@rustic-hw.com;Salome Levi;ms;;USD;9b600369be8c04b97c3793e2d6d48123;Rustic Services, b2bmanagergroup
+akiro.nakamura@rustic-hw.com;Manager A;akiro.nakamura@rustic-hw.com;Akiro Nakamura;mr;;USD;d2b825af66668f74d89f818be959af0a;Rustic, b2bmanagergroup
+anil.gupta@rustic-hw.com;Manager B;anil.gupta@rustic-hw.com;Anil Gupta;mr;;USD;6790c3328bff636cb09519d354a3dc5d;Rustic Retail, b2bmanagergroup, b2bcustomergroup, premiumPermissions
+james.bell@pronto-hw.com;Approver B;james.bell@pronto-hw.com;James Bell;mr;;USD;083d09cd416a6ca4bc75153f717ff0e6;Pronto Services, b2bapprovergroup
+hanna.schmidt@pronto-hw.com;Approver A;hanna.schmidt@pronto-hw.com;Hanna Schmidt;ms;;USD;913fe7f5739da23a0dea5ac626b7c7b1;Pronto, b2bapprovergroup
+linda.wolf@pronto-hw.com;Admin A;linda.wolf@pronto-hw.com;Linda Wolf;ms;;USD;52ab0ce482beb0963a04f30dc17408a9;Pronto, b2badmingroup
+akiro.nakamura@pronto-hw.com;Manager A;akiro.nakamura@pronto-hw.com;Akiro Nakamura;mr;;USD;31857ddd9fd464750b4ff5ed2300c866;Pronto, b2bmanagergroup
+gi.sun@pronto-hw.com;Customer D;gi.sun@pronto-hw.com;Gi Sun;mr;;USD;8dd206d130b3c2ea3bb141b44a52a0a6;Pronto Services, b2bcustomergroup, commonPermissions
+william.hunter@pronto-hw.com;Customer C;william.hunter@pronto-hw.com;William Hunter;mr;;USD;79bd79e3dc12496c377ed84b97c75d64;Pronto Services, b2bcustomergroup, enhancedPermissions
+mark.rivers@pronto-hw.com;Customer A;mark.rivers@pronto-hw.com;Mark Rivers;mr;;USD;7313ea579609554fcf85b0892701a04d;Pronto Goods, b2bcustomergroup,enhancedPermissions
+mingmei.wang@pronto-hw.com;Customer B;mingmei.wang@pronto-hw.com;Mingmei Wang;ms;;USD;2075d7e5c20e6bbec8f1c0b40b94e44b;Pronto Goods, b2bcustomergroup, commonPermissions
+anil.gupta@pronto-hw.com;Manager B;anil.gupta@pronto-hw.com;Anil Gupta;mr;;USD;7734334d562fe2a4e909c0c4e587e4ce;Pronto Goods, b2bmanagergroup

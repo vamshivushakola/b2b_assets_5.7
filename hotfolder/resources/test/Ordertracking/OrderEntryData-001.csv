@@ -1,0 +1,5 @@
+# order ; costCenter ; entryNumber ; info ; namedDeliveryDate ; product ; quantityStatus ; quantity ; rejected ; calculated ; basePrice ; totalPrice ; unit ; 
+10;Pronto Services;0;"product ""1101690"" with name ""FireStorm 18 Volt 6 Tool Combo Kit""";;1101690;LIVING;3.00000000;0;0;10.00000000;30.00000000;pieces;
+1001;Pronto Services;0;"product ""1101695"" with name ""Cordless Jig Saw""";;1101695;LIVING;1.00000000;0;0;20.00000000;20.00000000;pieces;
+13;Pronto Services;0;"product ""1101695"" with name ""Cordless Jig Saw""";;1101695;DEAD;1.00000000;0;0;10.00000000;10.00000000;1A;
+16;Pronto Services;0;"product ""1101695"" with name ""Cordless Jig Saw""";;1101695;DEAD;1.00000000;0;0;10.00000000;10.00000000;1A;

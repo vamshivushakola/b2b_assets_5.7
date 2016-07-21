@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+ [y] hybris Platform
+
+ Copyright (c) 2000-2015 hybris AG
+ All rights reserved.
+
+ This software is the confidential and proprietary information of hybris
+ ("Confidential Information"). You shall not disclose such Confidential
+ Information and shall use it only in accordance with the terms of the
+ license agreement you entered into with hybris.
+
+  
+--><extensioninfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="extensioninfo.xsd">
+
+	<extension abstractclassprefix="Generated" classprefix="Singlevieworders" description="singlevieworders extension" managername="SingleviewordersManager" managersuperclass="de.hybris.platform.jalo.extension.Extension" name="singlevieworders">
+
+		<!-- you should add all required extensions to this list, except platform extensions which are automatically required -->         
+		<requires-extension name="hmc"/>
+		<requires-extension name="addonsupport"/>
+		<requires-extension name="b2bcommerce"/>
+		<requires-extension name="b2bacceleratorfacades"/>
+		<requires-extension name="b2bassetsfacades"/>
+
+		<coremodule generated="true" manager="com.generic.singlevieworders.jalo.SingleviewordersManager" packageroot="com.generic.singlevieworders"/>
+
+		<hmcmodule extensionclassname="com.generic.singlevieworders.hmc.SingleviewordersHMCExtension"/>
+					
+		
+
+	</extension>
+
+</extensioninfo>

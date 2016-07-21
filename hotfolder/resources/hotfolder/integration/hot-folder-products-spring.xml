@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ [y] hybris Platform
+
+ Copyright (c) 2000-2013 hybris AG
+ All rights reserved.
+
+ This software is the confidential and proprietary information of hybris
+ ("Confidential Information"). You shall not disclose such Confidential
+ Information and shall use it only in accordance with the terms of the
+ license agreement you entered into with hybris.
+-->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:int="http://www.springframework.org/schema/integration"
+       xmlns:file="http://www.springframework.org/schema/integration/file"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+		http://www.springframework.org/schema/integration/file http://www.springframework.org/schema/integration/file/spring-integration-file.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="baseDirectoryb2bassetsProducts" class="java.lang.String">
+        <constructor-arg value="#{baseDirectory}/${tenantId}/products"/>
+    </bean>
+
+
+    <!-- 1) Scan for files -->
+    <file:inbound-channel-adapter id="batchFilesB2bassetsProducts" directory="#{baseDirectoryb2bassetsProducts}"
+                                  filename-regex="^(.*)-(\d+)\.csv"
+                                  comparator="b2bassetsFileOrderComparatorForProducts"
+                                  prevent-duplicates="false">
+        <int:poller fixed-rate="#{configurationService.configuration.getProperty('hotfolder.product.poller.rate')}"/>
+    </file:inbound-channel-adapter>
+
+    <bean id="b2bassetsFileOrderComparatorForProducts"
+          class="de.hybris.platform.acceleratorservices.dataimport.batch.FileOrderComparator">
+        <property name="prefixPriority">
+            <map>
+                <!-- default priority is 0 -->
+                <entry key="ProductData" value="6"/>
+                <entry key="ProductInternationalData" value="5"/>
+                <entry key="ProductMediaData" value="4"/>
+            </map>
+        </property>
+    </bean>
+
+
+    <!-- 2) move the file to processing and setup header -->
+    <file:outbound-gateway request-channel="batchFilesB2bassetsProducts"
+                           reply-channel="batchFilesB2bassetsProductsProc"
+                           directory="#{baseDirectoryb2bassetsProducts}/processing" delete-source-files="true"/>
+    <int:service-activator input-channel="batchFilesB2bassetsProductsProc"
+                           output-channel="interfaceerrorBatchFilesHeaderInit"
+                           ref="b2bassetsHeaderSetupTaskForProducts" method="execute"/>
+    <bean id="b2bassetsHeaderSetupTaskForProducts"
+          class="de.hybris.platform.acceleratorservices.dataimport.batch.task.HeaderSetupTask">
+        <property name="catalog" value="#{configurationService.configuration.getProperty('hotfolder.product.default.catalog')}"/>
+        <property name="net" value="false"/>
+        <property name="storeBaseDirectory" ref="baseDirectoryb2bassetsProducts"/>
+    </bean>
+
+
+    <!-- default interface header -->
+    <bean id="defaultImpexProductHeader" class="java.lang.String">
+        <constructor-arg>
+            <value># ImpEx for importing data into $CATALOG$
+                $proc=processor=#{interfaceerrorImportProcessorClassName}
+
+                $defaultCatalogVersion=#{configurationService.configuration.getProperty('hotfolder.product.default.catalogVersion')}
+                $catalogVersion=catalogversion(catalog(id[default=$CATALOG$]),version[default='$defaultCatalogVersion'])[unique=true,default=$CATALOG$:$defaultCatalogVersion]
+				$taxGroup=Europe1PriceFactory_PTG(code)[default=us-sales-tax-full]
+                $lang=$LANGUAGE$
+            </value>
+        </constructor-arg>
+    </bean>
+
+
+    <!-- Converter -->
+    <bean id="batchProductDataConverterMapping"
+          class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.mapping.impl.DefaultConverterMapping"
+          p:mapping="ProductData" p:converter-ref="batchProductDataConverter"/>
+
+    <bean id="batchProductInternationalDataConverterMapping"
+          class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.mapping.impl.DefaultConverterMapping"
+          p:mapping="ProductInternationalData" p:converter-ref="batchProductInternationalDataConverter"/>
+
+
+    <!-- product data-->
+    <bean id="batchProductDataConverter" parent="interfaceerrorImpexConverter">
+        <property name="header">
+            <value>#{defaultImpexProductHeader}
+                INSERT_UPDATE Product[$proc]	;code[unique=true]	;ean	;supercategories(code,$catalogVersion)[collection-delimiter=',']	;approvalstatus(code)[default='check']  ;manufacturerName	;manufacturerAID	;unit(code)	;deliveryModes(code)	;deliveryTime	;contentUnit(code)[default=pieces]	;numberContentUnits	;onlineDate[dateformat=dd/MM/yyyy HH:mm]	;offlineDate[dateformat=dd/MM/yyyy HH:mm]	;minOrderQuantity	;maxOrderQuantity	;erpGroupBuyer	;erpGroupSupplier	;supplierAlternativeAID	;vendors(code)	;$catalogVersion	;sequenceId[translator=de.hybris.platform.acceleratorservices.dataimport.batch.converter.SequenceIdTranslator];$taxGroup<!--;isSellableOnline[default=true]-->
+            </value>
+        </property>
+        <property name="impexRow">
+            <value>                             ;{+0}               ;{1}    ;{2}                                                               ;{+3}                                    ;{4}                ;{5}                ;{+6}       ;{7}                    ;{8}            ;{9}                                ;{10}               ;{11}                                       ;{12}                                       ;{13}               ;{14}               ;{15}           ;{16}               ;{17}                   ;{18}           ;                    ;                                                                                                             <!--;{19}-->
+            </value>
+        </property>
+    </bean>
+
+
+    <!-- product international data-->
+    <bean id="batchProductInternationalDataConverter" parent="interfaceerrorImpexConverter">
+        <property name="header">
+            <value>#{defaultImpexProductHeader}
+                INSERT_UPDATE Product[$proc]    ;code[unique=true]	;name[lang=$lang]   ;summary[lang=$lang]    ;description[lang=$lang]    ;remarks[lang=$lang]    ;segment[lang=$lang]    ;$catalogVersion
+            </value>
+        </property>
+        <property name="impexRow">
+            <value>                             ;{+0}               ;{1}                ;{2}                    ;{3}                        ;{4}                    ;{5}                    ;
+            </value>
+        </property>
+    </bean>
+
+    <!-- Import medias -->
+
+    <bean id="batchProductMediaDataMediaConverterMap"
+          class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.mapping.impl.DefaultConverterMapping"
+          p:mapping="ProductMediaData" p:converter-ref="batchProductMediaDataMediaConverter"/>
+
+    <bean id="batchProductMediaDataMediaContainerConverterMap"
+          class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.mapping.impl.DefaultConverterMapping"
+          p:mapping="ProductMediaData" p:converter-ref="batchProductMediaDataMediaContainerConverter"/>
+
+    <bean id="batchProductMediaDataConverterMap"
+          class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.mapping.impl.DefaultConverterMapping"
+          p:mapping="ProductMediaData" p:converter-ref="batchProductMediaDataConverter"/>
+
+    <!-- create medias -->
+
+    <bean id="batchProductMediaDataMediaConverter"
+          class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.impl.DefaultImpexConverter">
+        <property name="header">
+            <value>
+                #{defaultImpexProductHeader}
+
+                $path=file:#{baseDirectoryb2bassetsProducts}
+
+                #import in media
+                $media=@media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator][forceWrite=true]
+                INSERT_UPDATE Media[$proc]  ;code[unique=true] 		;       			  ;$catalogVersion    ;mime[default=image/jpeg]      		;folder(qualifier)		;realfilename 	;mediaFormat(qualifier) ;$media
+                #% afterEach: rm("#{baseDirectoryb2bassetsProducts.replace('\', '/')}/"+impex.getLastImportedItem().getRealFileName())
+            </value>
+        </property>
+        <property name="impexRow">
+            <value>
+                ;/CMFGeneric/{+0}-{+1} 	;CMFContainer-{+0} 	  ;                   ;{2} 	                                 ;images			     ;{+1}           ;CMFGeneric 	        ;$path/{+1}
+            </value>
+        </property>
+    </bean>
+
+    <!-- create Media container -->
+
+    <bean id="batchProductMediaDataMediaContainerConverter"
+          class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.impl.DefaultImpexConverter">
+        <property name="header">
+            <value>
+
+                #{defaultImpexProductHeader}
+
+                $medias=medias(code, $catalogVersion)[mode=append]
+
+                #import in MediaContainer
+                INSERT_UPDATE MediaContainer;qualifier[unique=true];$medias                     ;$catalogVersion
+            </value>
+        </property>
+        <property name="impexRow">
+            <value>
+                ;CMFContainer-{+0} 	   ;/CMFGeneric/{+0}-{+1} 	  ;
+            </value>
+        </property>
+    </bean>
+
+    <!-- link medias to products -->
+    <bean id="batchProductMediaDataConverter"
+          parent="interfaceerrorImpexConverter">
+        <property name="header">
+            <value>
+                #{defaultImpexProductHeader}
+
+                $picture=picture(code, $catalogVersion)
+                $thumbnail=thumbnail(code, $catalogVersion)
+                $thumbnails=thumbnails(code, $catalogVersion)
+                $galleryImages=galleryImages(qualifier, $catalogVersion)
+
+                #link to product
+                UPDATE Product[$proc]   ;code[unique=true]  ;$picture		         ; $thumbnail	        ; $galleryImages    ; $catalogVersion
+            </value>
+        </property>
+        <property name="impexRow">
+            <value>
+                ;{+0}				;/CMFGeneric/{+0}-{+1}   ;/CMFGeneric/{+0}-{+1} ; CMFContainer-{+0};
+            </value>
+        </property>
+    </bean>
+</beans>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ [y] hybris Platform
+
+ Copyright (c) 2000-2013 hybris AG
+ All rights reserved.
+
+ This software is the confidential and proprietary information of hybris
+ ("Confidential Information"). You shall not disclose such Confidential
+ Information and shall use it only in accordance with the terms of the
+ license agreement you entered into with hybris.
+-->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:int="http://www.springframework.org/schema/integration"
+       xmlns:file="http://www.springframework.org/schema/integration/file"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+		http://www.springframework.org/schema/integration/file http://www.springframework.org/schema/integration/file/spring-integration-file.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="baseDirectoryb2bassetsPrice" class="java.lang.String">
+        <constructor-arg value="#{baseDirectory}/${tenantId}/price"/>
+    </bean>
+
+
+    <!-- 1) Scan for files -->
+    <file:inbound-channel-adapter id="batchFilesB2bassetsPrice" directory="#{baseDirectoryb2bassetsPrice}"
+                                  filename-regex="^(.*)-(\d+)\.csv"
+                                  prevent-duplicates="false">
+        <int:poller fixed-rate="#{configurationService.configuration.getProperty('hotfolder.price.poller.rate')}"/>
+    </file:inbound-channel-adapter>
+
+    <!--bean id="b2bassetsFileOrderComparatorForCustomers"
+          class="de.hybris.platform.acceleratorservices.dataimport.batch.FileOrderComparator">
+        <property name="prefixPriority">
+            <map>
+                
+                <entry key="AddressData" value="6"/>
+                <entry key="CustomerData" value="5"/>
+            </map>
+        </property>
+    </bean-->
+
+
+    
+    <!-- 2) move the file to processing and setup header -->
+    <file:outbound-gateway request-channel="batchFilesB2bassetsPrice"
+                           reply-channel="batchFilesB2bassetsPriceProc"
+                           directory="#{baseDirectoryb2bassetsPrice}/processing" delete-source-files="true"/>
+    <int:service-activator input-channel="batchFilesB2bassetsPriceProc"
+                           output-channel="interfaceerrorBatchFilesHeaderInit"
+                           ref="b2bassetsHeaderSetupTaskForPrice" method="execute"/>
+    <bean id="b2bassetsHeaderSetupTaskForPrice"
+          class="de.hybris.platform.acceleratorservices.dataimport.batch.task.HeaderSetupTask">
+        <property name="catalog" value="#{configurationService.configuration.getProperty('hotfolder.price.default.catalog')}"/>
+        <property name="net" value="false"/>
+        <property name="storeBaseDirectory" ref="baseDirectoryb2bassetsPrice"/>
+    </bean>
+
+
+    <!-- default interface header -->
+    <bean id="defaultImpexPriceHeader" class="java.lang.String">
+        <constructor-arg>
+            <value># ImpEx for importing data into $CATALOG$
+                $proc=processor=#{interfaceerrorImportProcessorClassName}
+
+                $defaultCatalogVersion=#{configurationService.configuration.getProperty('hotfolder.price.default.catalogVersion')}
+                $catalogVersion=catalogversion(catalog(id[default=$CATALOG$]),version[default='$defaultCatalogVersion'])[unique=true,default=$CATALOG$:$defaultCatalogVersion]
+
+                $lang=$LANGUAGE$
+            </value>
+        </constructor-arg>
+    </bean>
+
+
+    <!-- Converter -->
+    <bean id="batchPriceDataConverterMapping"
+          class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.mapping.impl.DefaultConverterMapping"
+          p:mapping="PriceData" p:converter-ref="batchPriceDataConverter"/>
+
+    
+
+    <!-- price data-->
+    <bean id="batchPriceDataConverter" parent="interfaceerrorImpexConverter">
+        <property name="header">
+            <value>#{defaultImpexPriceHeader}
+					INSERT_UPDATE PriceRow[$proc];product(code,$catalogVersion)[unique=true];ug(code)[unique=true];currency(isocode)[unique=true];price;$catalogVersion;minqtd;unit(code);sequenceId[translator=de.hybris.platform.acceleratorservices.dataimport.batch.converter.SequenceIdTranslator]
+            </value>
+        </property>
+        <property name="impexRow">
+            <value>                              ;{+0}                                      ;{1}                  ;{+2}                          ;{+3} ;                ;{4}  ;{+5}      ;
+            </value>
+        </property>
+    </bean>
+
+
+</beans>

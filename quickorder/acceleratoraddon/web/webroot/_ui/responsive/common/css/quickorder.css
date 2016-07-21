@@ -1,0 +1,77 @@
+.quickorder {
+    width: 100%;
+}
+
+.quickorder th, .quickorder td {
+    padding: 8px 4px;
+    margin: 0;
+    border-right-style: dashed;
+    border-right-width: 1px;
+    border-right-color: #CCCCCC;
+    vertical-align: middle;
+    text-align: center;
+    word-break: break-word;
+}
+
+.quickorder th:last-child, .quickorder td:last-child {
+    border-right: none;
+}
+
+.quickorder input {
+    width: 90%;
+    height: 25px;
+}
+
+.quickorder th.quantity {
+    width: 80px;
+}
+
+.quickorder th.code {
+    width: 160px;
+}
+
+.quickorder th.name {
+
+}
+
+.quickorder th.remove {
+    width: 40px;
+}
+
+.quickorder .code input {
+    margin: 0;
+}
+
+.quickorder th.delete {
+    width: 10%;
+}
+.template {
+    background: url(../images/csv.png) no-repeat center left;
+    padding-left: 35px;
+    line-height: 30px;
+    display: inline-block;
+    margin-top: 5px;
+    margin-left: 5px;
+}
+.quickorder .ui-menu {
+    width: auto !important;
+}
+.quickorder .errorMessage{
+    font:10px Tahoma,sans-serif;
+    color:#ED7476;
+    margin-left:5px;
+    text-align: center;
+}
+
+.js-quickorder-form .alert-cart-empty {
+    display: inline;
+}
+
+.js-quickorder-form .add_to_cart_button {
+    float: right;
+    clear: both;
+}
+
+.quickorder-csv-form .bootstrap-filestyle{
+    display: inline-block;
+}

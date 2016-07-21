@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ [y] hybris Platform
+
+ Copyright (c) 2000-2013 hybris AG
+ All rights reserved.
+
+ This software is the confidential and proprietary information of hybris
+ ("Confidential Information"). You shall not disclose such Confidential
+ Information and shall use it only in accordance with the terms of the
+ license agreement you entered into with hybris.
+-->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+    <bean id="defaultAdvancedProductSearchFacade"
+          class="com.generic.productsearch.service.impl.DefaultAdvancedProductSearchImpl">
+        <property name="fieldsList">
+            <list>
+                <value>code</value>
+                <value>name</value>
+               <!--  <value>classificationNumber</value> -->
+                <value>summary</value>
+                <value>description</value>
+            </list>
+        </property>
+    </bean>
+    <alias name="defaultAdvancedProductSearchFacade" alias="advancedProductSearchFacade"/>
+
+
+    <!--  Populators converters -->
+    <alias name="defaultPasSearchRequestConverter" alias="pasSearchRequestConverter"/>
+    <bean id="defaultPasSearchRequestConverter" parent="abstractPopulatingConverter">
+        <lookup-method name="createTarget" bean="solrSearchResponse"/>
+        <property name="populators">
+            <list>
+                <ref bean="pasSearchRequestPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultPasSearchRequestPopulator" alias="pasSearchRequestPopulator"/>
+    <bean id="defaultPasSearchRequestPopulator"
+          class="com.generic.productsearch.converters.populator.DefaultPasSearchRequestPopulator">
+    </bean>
+
+
+    <bean id="solrSearchRequest"
+          class="de.hybris.platform.commerceservices.search.solrfacetsearch.data.SolrSearchRequest"
+          scope="prototype"/>
+    <bean id="solrSearchResponse"
+          class="de.hybris.platform.commerceservices.search.solrfacetsearch.data.SolrSearchResponse"
+          scope="prototype"/>
+
+
+	<!-- To solve issue of appending *:* because query was null so overriding following beans to comment the code of appending *:* -->
+	<alias name="defaultProductSearchCommerceSearchQueryPageableConverter" alias="productSearchCommerceSearchQueryPageableConverter"/>
+	<bean id="defaultProductSearchCommerceSearchQueryPageableConverter" parent="abstractPopulatingConverter">
+		<property name="targetClass"
+					 value="de.hybris.platform.commerceservices.search.solrfacetsearch.data.SolrSearchRequest"/>
+		<property name="populators">
+			<list>
+				<ref bean="commerceSearchSolrQueryPopulator"/>
+				<ref bean="commerceSearchPagePopulator"/>
+				<ref bean="commerceSearchSortPopulator"/>
+				<ref bean="commerceSearchTextPopulator"/>
+				<ref bean="commerceSearchFiltersPopulator"/>
+			</list>
+		</property>
+	</bean>
+	<bean parent="modifyPopulatorList">
+		<property name="list" ref="productSearchCommerceSearchQueryPageableConverter"/>
+		<property name="add" ref="productSearchboostSearchQueryPopulator"/>
+	</bean>
+	
+	<alias name="defaultProductSearchBoostSearchQueryPopulator" alias="productSearchboostSearchQueryPopulator"/>
+	<bean id="defaultProductSearchBoostSearchQueryPopulator" class="com.generic.productsearch.converters.populator.solr.ProductSearchBoostSearchQueryPopulator">
+		<property name="categoryFilterTermKey" value="category"/>
+		<property name="heroProductFacade" ref="heroProductFacade"/>
+		<property name="categoryService" ref="categoryService"/>
+		<property name="boostService" ref="boostService"/>
+		<property name="solrQueryOperatorTranslator" ref="defaultSolrQueryOperatorTranslator"/>
+	</bean>
+	
+	<!-- I don't know following bean override is required or not but should be there so that it doesn't disturb any solr functionality -->
+	<bean parent="modifyPopulatorList">
+		<property name="list" ref="productSearchCommerceSearchQueryPageableConverter"/>
+		<property name="add" ref="conditionalSortFilteringIndexedTypePopulator"/>
+	</bean>
+
+	<bean parent="modifyPopulatorList">
+		<property name="list" ref="productSearchCommerceSearchQueryPageableConverter"/>
+		<property name="add" ref="facetReconfigurationPopulator"/>
+	</bean>
+</beans>

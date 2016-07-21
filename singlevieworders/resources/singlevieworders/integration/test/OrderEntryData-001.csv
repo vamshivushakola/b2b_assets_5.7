@@ -1,0 +1,5 @@
+# order ; costCenter ; entryNumber ; info ; namedDeliveryDate ; product ; quantityStatus ; quantity ; rejected ; calculated ; basePrice ; totalPrice ; unit ; 
+10;ProntoServices;0;"product ""1101695"" with name ""Cordless Jig Saw""";;1101695;LIVING;3;0;0;45;135;pieces;
+1001;ProntoServices;0;"product ""1128762"" with name ""Professional Network Installer Tool Kit""";;1128762;LIVING;1;0;0;270;270;pieces;
+13;ProntoServices;0;"product ""2116274"" with name ""KA310 240W 1/3 Sheet Sander""";;2116274;DEAD;1;0;0;10;10;pieces;
+16;ProntoServices;0;"product ""2116275"" with name ""KR703K""";;2116275;LIVING;1;0;0;10;10;pieces;

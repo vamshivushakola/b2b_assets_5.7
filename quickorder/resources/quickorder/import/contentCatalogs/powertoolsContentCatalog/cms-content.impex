@@ -1,0 +1,40 @@
+# ImpEx for Importing CMS Content
+
+# Macros / Replacement Parameter definitions
+$contentCatalog=powertoolsContentCatalog
+$contentCatalogName=Powertools Content Catalog
+$contentCV=catalogVersion(catalog(id[default=$contentCatalog]),version[default='Staged'])
+$siteResource=jar:com.capgemini.quickorder.setup.InitialDataSystemSetup&/quickorder/import/contentCatalogs/$contentCatalog
+
+INSERT_UPDATE QuickOrderComponent;$contentCV[unique=true];uid[unique=true];name;numberRows;minimumCharactersSearch;maximumResultsSearch;delaySearch;styleClass;&componentRef
+;;HomepageQuickOrderComponent;Homepage Quick Order Component;5;3;4;300;;HomepageQuickOrderComponent
+
+INSERT_UPDATE CsvOrderComponent;$contentCV[unique=true];uid[unique=true];name;file;&componentRef
+;;HomepageCsvOrderComponent;Homepage Csv Order Component;;HomepageCsvOrderComponent
+
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];name;active;cmsComponents(&componentRef)
+;;Section2BSlot-Homepage;Section2B Slot for Homepage;true;HomepageQuickOrderComponent
+;;Section2CSlot-Homepage;Section2C Slot for Homepage;true;HomepageCsvOrderComponent
+
+INSERT_UPDATE ContentSlotForPage;$contentCV[unique=true];uid[unique=true];position[unique=true];page(uid,$contentCV)[unique=true][default='homepage'];contentSlot(uid,$contentCV)[unique=true]
+;;Section2B-Homepage;Section2B;;Section2BSlot-Homepage
+;;Section2C-Homepage;Section2C;;Section2CSlot-Homepage
+
+#Removing Help button from below slots
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];name;active;cmsComponents(&componentRef)
+;;SideContent-cartPage;Side Slot for cartPage;true;
+;;SideContent-login;Side Slot for Login Page;true;
+;;SideContent-checkoutLogin;Side Slot for Checkout Login Page;true;
+;;SideContent-singleStepCheckoutSummaryPage;Side Slot for singleStepCheckoutSummaryPage;true;
+
+INSERT_UPDATE ContentSlotForPage;$contentCV[unique=true];uid[unique=true];position[unique=true];page(uid,$contentCV)[unique=true][default='cartPage'];contentSlot(uid,$contentCV)[unique=true]
+;;Side-cartPage;SideContent;;SideContent-cartPage
+
+INSERT_UPDATE ContentSlotForPage;$contentCV[unique=true];uid[unique=true];position[unique=true];page(uid,$contentCV)[unique=true][default='login'];contentSlot(uid,$contentCV)[unique=true]
+;;Side-login;SideContent;;SideContent-login
+
+INSERT_UPDATE ContentSlotForPage;$contentCV[unique=true];uid[unique=true];position[unique=true];page(uid,$contentCV)[unique=true][default='checkout-login'];contentSlot(uid,$contentCV)[unique=true]
+;;Side-checkoutLogin;SideContent;;SideContent-checkoutLogin
+
+INSERT_UPDATE ContentSlotForPage;$contentCV[unique=true];uid[unique=true];position[unique=true];page(uid,$contentCV)[unique=true];contentSlot(uid,$contentCV)[unique=true]
+;;Side-singleStepCheckoutSummaryPage;SideContent;singleStepCheckoutSummaryPage;SideContent-singleStepCheckoutSummaryPage

@@ -1,0 +1,747 @@
+@media ( min-width : 992px ) {
+	.nav-container .navbar-nav>li>a {
+		padding-top: 15px;
+		padding-bottom: 30px;
+		padding-right: 30px;
+		padding-left: 0px;
+	}
+	.nav-container .navbar-nav>li>a.cross,.nav-container .navbar-default .navbar-nav>.open>a.cross
+		{
+		padding: 20px;
+		padding-right: 20px;
+	}
+	ul.nav li.dropdown:hover>ul.dropdown-menu {
+		display: block;
+	}
+	.container-shadow {
+		background: transparent url(../images/container_shadow.png) center top
+			no-repeat;
+		height: 15px;
+		bottom: -15px;
+		position: absolute;
+		left: 0;
+		right: 0;
+	}
+	.nav-container .container-shadow {
+		display: none;
+	}
+}
+
+/* desktop */
+@media ( min-width : 1200px ) {
+	
+	
+/*Deepali: for card payment page:exipry date field */
+	fieldset.cardDate .form_field-input{
+		width:253px;
+	}
+	
+	fieldset.cardDate select{
+		height: 46px;
+	}
+	
+/* 	added by namrata for replenishment schedule */	
+	#replenishmentSchedule .scheduleformW {
+		height: 190px;
+	}
+	
+	.block-title {
+		font-size: 25px;
+	}
+	.product-detail-page .more-images {
+		width:97px;
+	}
+	.product-detail-page .product-img-box .product-image {
+		width: 430px;
+		margin-left:14px;
+	}
+	.product-detail-page .product-shop {
+		padding-left:25px;
+	}
+	.product-detail-page .product-img-box, 
+	.product-detail-page .product-shop {
+		width: 50%;
+		margin-left: 0;
+	}
+
+/* 	added by namrata for replenishment confirmation page buttons */
+	.main-content .replButtons{
+		 width: 1132px !important;
+	}
+}
+
+@media ( min-width : 992px ) and ( max-width : 1199px ) {
+	.nav-container .navbar-default .navbar-nav>li>a {
+		font-size: 12px;
+	}
+	
+	
+}
+
+/* tab */
+@media ( max-width : 1199px) {
+		
+/*Deepali: for card payment page:exipry date field */
+	fieldset.cardDate .form_field-input{
+		width:237px;
+	}
+	
+	fieldset.cardDate select{
+		height: 46px;
+	}
+	
+	
+/* Deepali: Added for PDP extra space issue */
+	 .product-tabs-cross-sell .col-sm-3{
+		padding-top: 10px;
+		width: 100%;
+	}
+/*Deepali: My Quotes details extra space issue */
+	.accountContentPane .span-20{
+		width:100%
+	}
+	
+	/* Kinnari: Edit related budget select cost center Extra space issue */
+ 	#selectBudgetSpan {
+ 	width:750px;
+ 	}
+ 	/* Kinnari: Edit related budget select cost center action buttons issue */
+ 	#order_history .selected .last{
+ 	width:90px;
+ 	}
+	
+/* 	added by namrata for replenishment schedule */	
+	#replenishmentSchedule .scheduleformW {
+		height: 190px;
+	}
+	
+	.checkout-place-order-top button.positive {
+		float: none !important;
+	}
+
+/* added by namrata for store finder details page tab view */
+	.span-22 .item_container_holder {
+		width: 724px;
+	}
+	
+/* 	added by namrata for replenishment order confirmation page table */
+	.orderBoxes table#your_cart {
+		width: 730px;
+	}
+	
+/* added by namrata	replenishment confirmation page */
+	.span-7 .item_container_holder {
+		width:268px;
+	}
+	
+	.repl_top_cont_btn{
+	 	width: 725px;
+	}
+	
+/* Deepali: added for order history page table */
+	#order_history thead th {
+		padding: 3px !important;
+	}
+	
+	.data-table tbody td{
+		padding-left: 6px !important;
+	}
+	
+	/*added by venkatesh for order approval dashboard */
+	 .span-20 {
+	    width: 100%;
+	}
+	
+	/*added by venkatesh for address and payment popup close button */
+	 #cboxWrapper{
+ 		width: 100% !important;
+	}  
+}
+
+@media ( max-width :991px) {
+	.navbar-header {
+		float: none;
+	}
+	.navbar-left,.navbar-right {
+		float: none !important;
+	}
+	.navbar-toggle {
+		display: block;
+	}
+	.navbar-collapse {
+		border-top: 1px solid transparent;
+		box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+	}
+	.navbar-fixed-top {
+		top: 0;
+		border-width: 0 0 1px;
+	}
+	.navbar-collapse.collapse {
+		display: none !important;
+	}
+	.navbar-nav {
+		float: none !important;
+		margin-top: 7.5px;
+	}
+	.navbar-nav>li {
+		float: none !important;
+	}
+	.navbar-nav>li>a {
+		padding-top: 10px;
+		padding-bottom: 10px;
+	}
+	.collapse.in {
+		display: block !important;
+	}
+	.nav-container .navbar-collapse.collapse.in {
+		border-top: 3px solid #00A0D7;
+	}
+	.nav-container .navbar-nav>li>.dropdown-menu {
+		border: none;
+		margin-top: 0px;
+	}
+	.nav-container .dropdown,.nav-container .dropdown-menu li a {
+		background-color: #fafafa;
+		border-top: 1px solid rgba(200, 200, 200, 0.2);
+		border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+	}
+	#cart_header .nav-container .dropdown,.nav-container .dropdown-menu li a
+		{
+		border: none;
+		background-color: #ffffff;
+	}
+	.nav-container .container-shadow {
+		display: block;
+		background: transparent url(../images/container_shadow.png) center top
+			no-repeat;
+		height: 15px;
+		position: absolute;
+		left: 0;
+		right: 0;
+		z-index: 10000;
+	}
+	.header-menu .container {
+		padding: 0;
+	}
+	.nav-container .cross {
+		position: relative;
+		padding: 20px;
+		background: url('../images/cross.png') center center no-repeat;
+		float: right;
+		padding-right: 50px;
+		margin-top: -40px;
+	}
+	.nav-container .navbar-default .navbar-nav>.open>a.cross {
+		position: relative;
+		background: url('../images/minus.png') center center no-repeat;
+		float: right;
+	}
+	.yamm .nav,.yamm .collapse,.yamm .dropup,.yamm .dropdown {
+		position: relative;
+	}
+	.navbar-default .navbar-nav .open .dropdown-menu>li>a {
+		font-weight: bold;
+		text-shadow: none;
+		color: #494940;
+		font-size: 16px;
+	}
+	.navbar-default .navbar-nav .open .dropdown-menu>li>a:hover {
+		color: #00A0D7;
+	}
+	#navbarCollapse {
+		position: absolute;
+		width: 100%;
+		-webkit-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+		-moz-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+		box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+	}
+	#cart_header {
+		margin-top: -42px;
+		margin-right: 15px;
+	}
+	.main-content h2.subtitle,
+	.popin h2.subtitle {
+		font-size: 16px;
+		padding: 5px 20px 5px 8px;
+	}
+	.main-content h2.no-arrow {
+		font-size: 30px;
+	}
+	.fixed-nav {
+		position: relative;
+	}
+	.product-detail-page .more-images {
+		width:128px;
+	}
+	.product-detail-page .product-image {
+		width: 560px;
+		margin-left:16px;
+	}
+	.data-table .product_image {
+		width: 150px;
+		margin-bottom: 15px;
+		float: none;
+	}
+	.data-table .product-shop {
+		float: none;
+		padding-left: 0;
+	}
+	a.top-button-cart {
+		top: 15px;
+	}
+	
+	/* tablet view  
+       below code added by venkatesh for responsive popup */
+	 #colorbox {
+          width:80% !important;
+          left:10% !important;
+          right:10% !important;  
+       }
+     
+     /* tablet view  
+       below code added by venkatesh for responsive popup */ 
+     #cboxLoadedContent {
+          width:80% !important;  
+	 }
+	 
+	 /* tablet view  
+       below code added by venkatesh for responsive progress bar */
+	 @media ( min-width : 768px ) and ( max-width : 856px ){
+		 #checkoutProgress li.step{
+			height: 55px !important;
+			padding-bottom: 20px:
+		}  
+		
+		.append-1 {    
+	    	padding-top: 20px;
+		}
+	}
+}
+
+/* mobile */
+@media ( max-width :767px) {
+	
+/* multicart table & select box*/
+	.addon-multicarts-not-hidden table tr td {
+		padding: 2px;
+		border: none;
+	}
+	
+	#addon-multicarts-list .select-action select {
+    	width: 140px !important;
+	}
+
+/*Deepali: for card payment page:exipry date field */
+	.form-list input.text,
+	.form-list select.select,
+	.form-list .chosen-container-single .chosen-single span,
+	.form-list .chosen-container-multi .chosen-choices {
+		padding: 13px 15px 13px 115px;
+	}
+
+	fieldset.cardDate .form_field-input{
+		width:120px;
+	}
+	
+	fieldset.cardDate select{
+		height: 23px;
+	}
+	fieldset.cardDate legend{
+		width:105px !important;
+	}
+	
+	/* Deepali: Added for delivery-address add text boxes*/
+	.i18nAddressForm .form-list input.text, .form-list select.select {
+		padding: 13px 15px 13px 115px;
+	}
+	.form-list li label.label-input {
+		width: 110px;
+	}
+	
+	/* Deepali: Added for PDP extra space issue */
+	.col-sm-3 .simple_disp-img img{
+		width:100%
+	}
+	
+	/* Deepali: Added for ordersearch/productsearch page width of text and space in entered value  */
+	.productsearchform li label.label-input {
+		width: 150px !important;
+	}
+	.productsearchform input.text{
+		padding-left: 170px !important;
+	} 
+	
+  	/* Kinnari: My Quotes details extra space issue */
+	.accountContentPane .span-20 .span-8{
+		   width: 206px;
+	}
+  	/* Kinnari: My Quotes details extra space issue */
+ 	.accountContentPane .span-20 .span-9{
+	 width: 284px;
+ 	}
+ 	
+ 	/* Kinnari: Edit related budget select cost center Extra space issue */
+ 	#selectBudgetSpan {
+ 	width:320px;
+ 	}
+ 	
+	/* 	added by namrata for replenishment schedule */
+	#replenishmentSchedule .scheduleform {
+		width: 200px;
+	 	padding: 10px 10px 0;
+	}
+	#replenishmentSchedule .scheduleformW {
+		height: 190px;
+	}
+	.replenishmentFrequency_left label, .replenishmentFrequency label {
+		font-size: 64%;
+	}
+	#replenishmentSchedule .headline {
+	 	height: 70px;
+	}
+	#replenishmentSchedule .form-actions a.button {
+		margin-top: 4px;
+	}
+	#placeOrder .scheduleReplenishmentButton {
+		width: 54%;
+	}
+	
+	/* 	added by namrata for replenishment order confirmation */
+	.myreplenishment {
+    	margin-bottom: 0px !important;
+    	margin-top: 0px !important;
+	}		
+	.orderBoxes table#your_cart {
+		width: 290px !important;
+	}
+
+	.totalreplenishment {
+        border-bottom: 1px solid #dcdcdc !important;
+	}
+	
+	.repl_top_cont_btn{
+	 	width: 174px;
+	}
+	
+	.orderHead {
+		width: 290px;
+	}
+	
+	
+/* 	added by namrata for checkoutProgress Bar */
+	#checkoutProgress {
+	position: relative;
+		width: 100%;
+		-webkit-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+		-moz-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+		box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+		border-top: 3px solid #00a0d7;
+		display: block !important;
+		padding: 0;
+		height: 170px;
+	}
+	#checkoutProgress li.step{
+	background-color: #fafafa;
+	border-top: 1px solid rgba(200, 200, 200, 0.2) !important;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.5) !important;
+	padding-bottom: 10px !important;
+    padding-top: 10px !important;
+    height: 42px;
+	}
+	
+	#checkoutProgress.steps-4 li.step{width:100%;}
+	#checkoutProgress.steps-5 li.step{width:100%;}
+	
+	#checkoutProgress li.step a{
+	line-height: 20px;
+	color: #494940;
+    font-size: 15px;
+    font-weight: bold;
+    text-shadow: none;
+    text-transform: uppercase;
+    display: block;
+	}
+	
+	#checkoutProgress li.step.active{
+	color:#fff;
+	background:#3BC0ED;
+    }
+	
+/* 	added by namrata for advanced search link */
+	.advanced {
+		 margin-left: 60px;
+   		 margin-right: 60px;
+	}
+/* 	added for store finder details page mobile view */
+	.item_container_holder {
+    	 width: 295px;
+	}
+	.store_details_left_col img{
+		width: 273px;
+	}
+	.store_details_right_col {
+		width: 277px;
+	}
+	
+	
+	.toplinks a {
+		padding-left: 12px;
+		padding-right: 12px;
+		margin-left: 0;
+		margin-right: 0;
+		border-left: 1px solid rgba(0, 0, 0, 0.2);
+	}
+	.toplinks li.last a {
+		border-right: 1px solid rgba(0, 0, 0, 0.2);
+	}
+	.header .logo,.header h1.logo {
+		margin-bottom: 50px;
+		float: none;
+		text-align: center;
+		display: block;
+	}
+	.header-search {
+		width: 205px;
+		margin: 0 auto;
+		display: block;
+		float: none !important;
+	}
+	.header-search input[type="text"] {
+		width: 168px;
+	}
+	#your_cart td,
+	#store_locator td,
+	#order_history td,
+	#payment_details td,
+	#address_book td,
+	#payment_details_modal td,
+	#approval-details-item td,
+	.quote-status-details-table td
+		{
+		display: block;
+	}
+	.data-table .product_image,
+	.data-table .store-image {
+		float: none;
+		width: 92px;
+		margin: 15px auto;
+	}
+	.data-table .store-image {
+		width: 100%;
+		text-align: center;
+	}
+	.data-table .product-shop {
+		float: none;
+		padding-left: 0;
+		text-align: center;
+	}
+	.data-table tbody td,.data-table tfoot td {
+		padding: 10px 5px !important;
+	}
+	#your_cart.data-table tbody td:first-child,
+	#store_locator.data-table tbody td:first-child,
+	#order_history.data-table tbody td:first-child,
+	#payment_details.data-table tbody td:first-child,
+	#address_book.data-table tbody td:first-child,
+	#payment_details_modal.data-table tbody td:first-child,
+	#approval-details-item.data-table tbody td:first-child,
+	.quote-status-details-table tbody td:first-child
+		{
+		padding-top: 20px !important;
+	}
+	.data-table tbody td {
+		border-bottom-width: 0;
+	}
+	.totals .data-table tbody td {
+		border-bottom-width: 1px;
+	}
+	.data-table tbody td.last {
+		border-bottom-width: 1px;
+	}
+	.no-responsive tbody td.last {
+		border-bottom-width: 0;
+	}
+	.itemPrice .price {
+		margin-top: 0;
+		display: inline;
+	}
+	.mobile-label {
+		display: inline;
+		font-size: 18px;
+		font-weight: normal;
+	}
+	#order_history .mobile-label,
+	#approval-details-item .mobile-label,
+	.quote-status-details-table .mobile-label {
+		font-size: 100%;
+	}
+	#store_locator .mobile-label,
+	#order_history .mobile-label,
+	#payment_details .mobile-label,
+	#address_book .mobile-label,
+	#payment_details_modal .mobile-label,
+	#approval-details-item .mobile-label,
+	.quote-status-details-table .mobile-label {
+		font-weight: bold;
+	}
+	.data-table .submitRemoveProduct {
+		position: static;
+		display: block;
+		margin: 10px auto 0;
+	}
+	.data-table tr {
+		text-align: center !important;
+	}
+	.form-list li .search_text_box label {
+		width: 150px;
+	}
+	.form-list .search_text_box input.text {
+		padding-left: 165px;
+	}
+	.products-list .product-image {
+		width: 150px;
+		margin-right: 20px;
+		margin-bottom: 40px;
+	}
+	.products-list .product-shop,.products-list .product-stock {
+		margin-left: 0;
+	}
+	#sort_form1,#sort_form2 {
+		float: none;
+	}
+	.pager {
+		text-align: center;
+	}
+	table#store_locator .store_details {
+		margin-left: 0;
+		text-align: center;
+	}
+	#store_locator p,
+	#store_locator ul,
+	#order_history td,
+	#payment_details td,
+	#address_book td,
+	#payment_details_modal td,
+	#payment_details_modal ul,
+	#approval-details-item td,
+	.quote-status-details-table td {
+		text-align: center;
+	}
+	#payment_details ul,
+	#address_book ul,
+	#payment_details_modal ul {
+		margin: 0;
+	}
+	#store_locator .store-openings td {
+		display: table-cell;
+	}
+	#store_locator.data-table .store-openings tbody td:first-child,#store_locator.data-table .store-openings tbody td
+		{
+		padding: 1px 0 !important;
+	}
+	.data-table tbody td,.data-table tbody td.last {
+		border-right-width: 0;
+	}
+	.data-table tbody tr,.data-table tbody td,.data-table tbody td.last {
+		border-right: 1px solid #dcdcdc;
+	}
+	#store_locator table tbody tr,
+	#approval-details-item.data-table tbody td,
+	#approval-details-item.data-table tbody td.last,
+	table.quote-status-details-table tbody td,
+	table.quote-status-details-table tbody td.last {
+		border-right: none;
+	}
+	.checkout-place-order button.positive {
+		float: none !important;
+	}
+	.min-select .form_field-input {
+		margin-bottom:10px;
+	}
+	.product-detail-page .more-images {
+		width:50px;
+	}
+	.product-detail-page .product-image {
+		width: 238px;
+		margin-left:7px;
+	}
+	.product-image .price-box {
+		-webkit-border-radius: 45px;
+		-moz-border-radius: 45px;
+		border-radius: 45px;
+		width: 90px;
+		height: 90px;
+		font-size: 18px;
+		padding-top: 35px;
+	}
+	.resp-vtabs .resp-tabs-container {
+		width:100%;
+	}
+	.resp-vtabs .resp-tab-content,
+	.resp-vtabs .resp-tabs-container {
+		border:none !important;
+	}
+	
+	.resp-vtabs {
+		border-bottom:none;
+		margin-bottom:30px !important;
+	}
+	
+	.resp-vtabs .resp-tab-content:last-child {
+		border-bottom:1px solid #dcdcdc !important;
+	}
+	
+	.resp-arrow {
+		display:none !important;
+	}
+	
+	#footer .copyright,
+	#footer .social-links {
+		text-align:center;
+	}
+	
+	.prod_content {
+		padding: 20px 10px;
+	}
+	
+	.login-link {
+		position: absolute;
+		right: 15px;
+		top: 40px;
+		padding-right: 10px;
+		font-size: 15px;
+	}
+	
+	.form-list li label.label-input.password {
+		width:150px;
+	}
+	
+	#updatePasswordForm .form-list input.text {
+		padding-left: 165px;
+	}
+	
+	.right.show-all {
+		float:none !important;
+	}
+	.grid_multidimension td.first {
+		background:#FFFFFF;
+		border-right:none;
+		font-weight:normal;
+	}
+	
+	/* Mobile view  
+       below code added by venkatesh for responsive popup */
+	#colorbox {
+              width:90% !important;
+              left:5% !important;
+              right:5% !important; 
+       }
+    
+    /*added by venkatesh for address and payment popup close button */
+    #cboxWrapper{
+ 		width: 100% !important;
+	}  
+}
+
+
+

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+ [y] hybris Platform
+
+ Copyright (c) 2000-2013 hybris AG
+ All rights reserved.
+
+ This software is the confidential and proprietary information of hybris
+ ("Confidential Information"). You shall not disclose such Confidential
+ Information and shall use it only in accordance with the terms of the
+ license agreement you entered into with hybris.
+
+  
+-->
+<!--
+	ATTENTION: This is just an example file. You have to edit it according to your needs.
+-->
+
+<items 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+			xsi:noNamespaceSchemaLocation="items.xsd">
+    <collectiontypes>
+    </collectiontypes>
+
+    <!-- <relations>
+        <relation code="OrderTrackingRelation" autocreate="true" generate="true" localized="false">
+            <sourceElement qualifier="orderTracking" type="OrderTracking" cardinality="many">
+                <modifiers partof="true"/>
+            </sourceElement>
+            <targetElement qualifier="abstractOrderEntry" type="AbstractOrderEntry" cardinality="one"></targetElement>
+        </relation>
+    </relations> -->
+
+	<itemtypes>
+        <itemtype code="Address" generate="false" autocreate="false">
+            <attributes>
+                <attribute qualifier="code" type="java.lang.String">
+                    <description>Add code Parameter</description>
+                    <persistence type="property" />
+                    <modifiers unique="false" optional="true" read="true" write="true" />
+                </attribute>
+            </attributes>
+        </itemtype>
+
+        <!-- <itemtype code="OrderTracking" generate="true" autocreate="true">
+            <deployment table="OrderTracking" typecode="31103" />
+            <attributes>
+                <attribute qualifier="scheduledDate" type="java.util.Date">
+                    <description>The scheduled delivery Date</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="scheduledQty" type="java.lang.Integer">
+                    <description>The scheduled delivery Qty</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="deliveryDate" type="java.util.Date">
+                    <description>The actual delivery Date</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="deliveryQty" type="java.lang.Integer">
+                    <description>The actual delivery Qty</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="trackingNumber" type="java.lang.String">
+                    <description>The tracking Number</description>
+                    <modifiers unique="true" />
+                    <persistence type="property"/>
+                </attribute>
+            </attributes>
+        </itemtype> -->
+
+
+	</itemtypes>
+</items>

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+           http://www.springframework.org/schema/aop
+           http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-3.1.xsd"
+        >
+
+    <!-- DAO -->
+    <alias name="defaultCartLogDAO" alias="cartLogDAO"/>
+    <bean name="defaultCartLogDAO"
+          class="com.generic.multicarts.daos.impl.DefaultCartLogDAO">
+        <property name="pagedFlexibleSearchService" ref="pagedFlexibleSearchService"/>
+    </bean>
+
+    <alias name="defaultMultiCartsDAO" alias="multiCartsDAO"/>
+    <bean name="defaultMultiCartsDAO"
+          class="com.generic.multicarts.daos.impl.DefaultMultiCartsDAO">
+    </bean>
+
+
+    <context:component-scan base-package="com.generic.multicarts.attributehandlers"/>
+
+    <!-- AOP -->
+    <aop:aspectj-autoproxy/>
+
+    <bean id="multicartsLogAspect" class="com.generic.multicarts.aspects.MultiCartsLogsAspect"/>
+
+    <!-- Extend default CartService -->
+    <bean id="multiCartsService" class="com.generic.multicarts.services.impl.MultiCartsServiceImpl"
+          parent="defaultCartService">
+    </bean>
+    <alias name="multiCartsService" alias="cartService" />
+
+    <!-- Extend default CartFacade -->
+    <bean id="multiCartsFacade" class="com.generic.multicarts.facades.impl.MultiCartsFacadeImpl"
+          parent="defaultB2BCartFacade"/>
+    <alias name="multiCartsFacade" alias="cartFacade" />
+
+    <!-- Extend default CartFactory -->
+    <bean id="multiCartsFactory" class="com.generic.multicarts.factories.impl.DefaultMultiCartsFactory"
+          parent="defaultB2BCartFactory"/>
+   <!-- <alias name="multiCartsFactory" alias="b2bCartFactory" />-->
+
+
+    <!-- AbstractPopulatingConverters -->
+    <!-- Logs -->
+    <alias name="defaultCartLogConverter" alias="cartLogConverter"/>
+    <bean id="defaultCartLogConverter" parent="abstractPopulatingConverter">
+        <lookup-method name="createTarget"  bean="cartLogData"/>
+        <property name="populators">
+            <list>
+                <ref bean="cartLogPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultCartLogPopulator" alias="cartLogPopulator"/>
+    <bean id="defaultCartLogPopulator"
+          class="com.generic.multicarts.converters.populator.CartLogPopulator">
+    </bean>
+
+    <!-- Share -->
+    <alias name="defaultCartShareConverter" alias="cartShareConverter"/>
+    <bean id="defaultCartShareConverter" parent="abstractPopulatingConverter">
+        <lookup-method name="createTarget"  bean="cartShareData"/>
+        <property name="populators">
+            <list>
+                <ref bean="cartSharePopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultCartSharePopulator" alias="cartSharePopulator"/>
+    <bean id="defaultCartSharePopulator"
+          class="com.generic.multicarts.converters.populator.CartSharePopulator">
+    </bean>
+
+    <!-- MultiCarts -->
+    <alias name="defaultMultiCartsConverter" alias="multiCartsConverter"/>
+    <bean id="defaultMultiCartsConverter" parent="abstractPopulatingConverter">
+        <lookup-method name="createTarget"  bean="multiCartsData"/>
+        <property name="populators">
+            <list>
+                <ref bean="multiCartsPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultMultiCartsPopulator" alias="multiCartsPopulator"/>
+    <bean id="defaultMultiCartsPopulator"
+          class="com.generic.multicarts.converters.populator.MultiCartsDataPopulator"
+            parent="defaultCartPopulator">
+    </bean>
+
+    <!-- Followers -->
+    <alias name="defaultCartFollowerConverter" alias="cartFollowerConverter"/>
+    <bean id="defaultCartFollowerConverter" parent="abstractPopulatingConverter">
+        <lookup-method name="createTarget"  bean="cartFollowerData"/>
+        <property name="populators">
+            <list>
+                <ref bean="cartFollowerPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultCartFollowerPopulator" alias="cartFollowerPopulator"/>
+    <bean id="defaultCartFollowerPopulator"
+          class="com.generic.multicarts.converters.populator.CartFollowerPopulator">
+    </bean>
+
+
+
+    <!-- Prototype Beans for Data POJOs -->
+    <bean id="cartLogData" class="com.generic.multicarts.data.CartLogData" scope="prototype"/>
+    <bean id="cartFollowerData" class="com.generic.multicarts.data.CartFollowerData" scope="prototype"/>
+    <bean id="multiCartsData" class="com.generic.multicarts.data.MultiCartsData" scope="prototype"/>
+    <bean id="cartShareData" class="com.generic.multicarts.data.CartShareData" scope="prototype"/>
+
+
+    <!-- Components -->
+    <bean id="selectCartComponentRenderer" class="com.generic.multicarts.component.renderer.SelectCartComponentRenderer">
+        <property name="typeService" ref="typeService"/>
+        <property name="uiExperienceService" ref="defaultUiExperienceService"/>
+        <property name="cmsComponentService" ref="cmsComponentService"/>
+        <property name="modelService" ref="modelService"/>
+    </bean>
+
+    <!-- Strategies -->
+    <bean id="DefaultMultiCartsStrategy" class="com.generic.multicarts.strategy.impl.DefaultMultiCartsStrategy">
+    </bean>
+    <alias name="DefaultMultiCartsStrategy" alias="multiCartsStrategy" />
+
+    <bean id="DefaultMultiCartsEditStrategy" class="com.generic.multicarts.strategy.impl.DefaultMultiCartsEditStrategy">
+    </bean>
+    <alias name="DefaultMultiCartsEditStrategy" alias="multiCartsEditStrategy" />
+
+</beans>

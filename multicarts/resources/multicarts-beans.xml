@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="beans.xsd">
+
+    <bean class="com.generic.multicarts.data.CartLogData" >
+        <description>Data object for CartLogData which has no equivalent on the type system</description>
+        <property name="date" type="java.util.Date"/>
+        <property name="message" type="String"/>
+        <property name="cart" type="String"/>
+        <property name="userUID" type="String"/>
+        <property name="userName" type="String"/>
+        <property name="productCode" type="String"/>
+        <property name="productUrl" type="String"/>
+        <property name="productName" type="String"/>
+        <property name="newValue" type="String"/>
+        <property name="oldValue" type="String"/>
+    </bean>
+
+    <bean class="com.generic.multicarts.data.MultiCartsData" extends="de.hybris.platform.commercefacades.order.data.CartData">
+        <description>Extended CartData</description>
+        <property name="shareList" type="java.util.List&lt;com.generic.multicarts.data.CartShareData>"/>
+        <property name="followerList" type="java.util.List&lt;com.generic.multicarts.data.CartFollowerData>"/>
+        <property name="name" type="String"/>
+        <property name="PK" type="de.hybris.platform.core.PK"/>
+        <property name="isShared" type="Boolean"/>
+        <property name="isOwner" type="Boolean"/>
+        <property name="follower" type="com.generic.multicarts.data.CartFollowerData"/>
+        <property name="hasNotification" type="java.lang.Boolean"/>
+    </bean>
+
+    <bean class="com.generic.multicarts.data.CartShareData" >
+        <property name="cartCode" type="String"/>
+        <property name="b2bunit" type="String"/>
+        <property name="b2bunitName" type="String"/>
+    </bean>
+
+    <bean class="com.generic.multicarts.data.CartFollowerData" >
+        <property name="cartCode" type="String"/>
+        <property name="userCode" type="String"/>
+        <property name="hasNotification" type="Boolean"/>
+    </bean>
+
+
+</beans>

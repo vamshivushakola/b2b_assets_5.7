@@ -1,0 +1,10 @@
+#;uid[unique=true];active[default=true];name;locName[lang=$lang];userPriceGroup;groups(uid);reportingOrganization(uid)
+Rustic Retail;1;Rustic Retail;Rustic Retail;;Rustic;Rustic
+Rustic Services;1;Rustic Services;Rustic Services;;Rustic;Rustic
+Services East;1;Services East;Services East;;Rustic Services;Rustic
+Custom Retail;1;Custom Retail;Custom Retail;;Rustic Retail;Rustic
+Rustic;1;Rustic;Rustic;;;Rustic
+Services West;1;Services West;Services West;;Rustic Services;Rustic
+Pronto Goods;1;Pronto Goods;Pronto Goods;;Pronto;Pronto
+Pronto Services;1;Pronto Services;Pronto Services;;Pronto;Pronto
+Pronto;1;Pronto;Pronto;;;Pronto

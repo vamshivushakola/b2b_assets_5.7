@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ [y] hybris Platform
+
+ Copyright (c) 2000-2013 hybris AG
+ All rights reserved.
+
+ This software is the confidential and proprietary information of hybris
+ ("Confidential Information"). You shall not disclose such Confidential
+ Information and shall use it only in accordance with the terms of the
+ license agreement you entered into with hybris.
+-->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/aop
+           http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <bean id="batchRunnerTask" class="de.hybris.platform.acceleratorservices.dataimport.batch.task.AbstractImpexRunnerTask">
+        <property name="sessionService" ref="sessionService" />
+        <property name="importService" ref="importService" />
+        <lookup-method name="getImportConfig" bean="importConfig" />
+    </bean>
+    <bean id="importConfig" class="de.hybris.platform.servicelayer.impex.ImportConfig" scope="prototype">
+        <property name="removeOnSuccess" value="true" />
+        <property name="failOnError" value="false" />
+        <property name="synchronous" value="true" />
+        <property name="legacyMode" value="true" />
+        <property name="maxThreads" value="#{configurationService.configuration.getProperty('acceleratorservices.batch.impex.max-threads')}" />
+        <property name="locale" value="en"/>
+    </bean>
+
+    <!-- Spring Integration -->
+    <import resource="classpath:/hotfolder/integration/hot-folder-products-spring.xml"/>
+
+    <import resource="classpath:/hotfolder/integration/hot-folder-customers-spring.xml"/>
+	<import resource="classpath:/hotfolder/integration/hot-folder-price-spring.xml"/>
+    <import resource="classpath:/hotfolder/integration/hot-folder-stocklevels-spring.xml"/>
+    <!-- <import resource="classpath:/hotfolder/integration/hot-folder-ordertracking-spring.xml"/> -->
+    <!-- <import resource="classpath:/hotfolder/integration/hot-folder-productrestriction-spring.xml"/> -->
+
+
+    <!-- Media creation strategies -->
+
+    <alias name="genericConvertedMediaCreationStrategy" alias="convertedMediaCreationStrategy"/>
+    <bean id="genericConvertedMediaCreationStrategy" class="com.generic.strategy.GenericConvertedMediaCreationStrategy"
+          parent="defaultConvertedMediaCreationStrategy">
+    </bean>
+
+
+    <!-- EXPORT §§§§§§§§§§§§§§§§§§§§§§§§§§§§§§-->
+    <bean id="exportOrderJob"
+          class="com.generic.export.ExportOrderJob"
+          parent="abstractJobPerformable">
+    </bean>
+			
+</beans>

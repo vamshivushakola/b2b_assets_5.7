@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+[y] hybris Platform
+
+Copyright (c) 2000-2013 hybris AG
+All rights reserved.
+
+This software is the confidential and proprietary information of hybris
+("Confidential Information"). You shall not disclose such Confidential
+Information and shall use it only in accordance with the terms of the
+license agreement you entered into with hybris.
+-->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:int="http://www.springframework.org/schema/integration"
+       xmlns:file="http://www.springframework.org/schema/integration/file"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+      http://www.springframework.org/schema/integration/file http://www.springframework.org/schema/integration/file/spring-integration-file.xsd
+      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="baseDirectoryb2bassetsCustomers" class="java.lang.String">
+        <constructor-arg value="#{baseDirectory}/${tenantId}/customers"/>
+    </bean>
+
+
+    <!-- 1) Scan for files -->
+    <file:inbound-channel-adapter id="batchFilesB2bassetsCustomers" directory="#{baseDirectoryb2bassetsCustomers}"
+                                  filename-regex="^(.*)-(\d+)\.csv"
+                                  comparator="b2bassetsFileOrderComparatorForCustomers"
+                                  prevent-duplicates="false">
+        <int:poller fixed-rate="#{configurationService.configuration.getProperty('hotfolder.customers.poller.rate')}"/>
+    </file:inbound-channel-adapter>
+
+    <bean id="b2bassetsFileOrderComparatorForCustomers"
+          class="de.hybris.platform.acceleratorservices.dataimport.batch.FileOrderComparator">
+        <property name="prefixPriority">
+            <map>
+                <!-- default priority is 0 -->
+                <entry key="CustomerB2BUnitData" value="5"/>
+                <entry key="customerB2BCustomerData" value="4"/>
+                <entry key="CustomerAddressData" value="3"/>
+            </map>
+        </property>
+    </bean>
+
+    <!-- 2) move the file to processing and setup header -->
+
+    <file:outbound-gateway request-channel="batchFilesB2bassetsCustomers"
+                           reply-channel="batchFilesB2bassetsCustomersProc"
+                           directory="#{baseDirectoryb2bassetsCustomers}/processing" delete-source-files="true"/>
+                           
+    <int:service-activator input-channel="batchFilesB2bassetsCustomersProc"
+                           output-channel="interfaceerrorBatchFilesHeaderInit"
+                           ref="b2bassetsHeaderSetupTaskForCustomers" method="execute"/>
+    <bean id="b2bassetsHeaderSetupTaskForCustomers"
+          class="de.hybris.platform.acceleratorservices.dataimport.batch.task.HeaderSetupTask">
+        <property name="catalog" value="#{configurationService.configuration.getProperty('hotfolder.customers.default.catalog')}"/>
+        <property name="net" value="false"/>
+        <property name="storeBaseDirectory" ref="baseDirectoryb2bassetsCustomers"/>
+    </bean>
+    <!-- default interface header -->
+
+    <bean id="defaultImpexCustomerHeader" class="java.lang.String">
+        <constructor-arg>
+            <value># ImpEx for importing data into $CATALOG$
+
+            	$proc=processor=#{interfaceerrorImportProcessorClassName}
+                $defaultCatalogVersion=#{configurationService.configuration.getProperty('hotfolder.customers.default.catalogVersion')}
+                $catalogVersion=catalogversion(catalog(id[default=$CATALOG$]),version[default='$defaultCatalogVersion'])[unique=true,default=$CATALOG$:$defaultCatalogVersion]
+
+                $lang=$LANGUAGE$
+            </value>
+        </constructor-arg>
+     </bean>
+
+    <!-- Converter -->
+
+    <bean id="batchB2BUnitConverterMapping"
+          class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.mapping.impl.DefaultConverterMapping"
+          p:mapping="CustomerB2BUnitData" p:converter-ref="batchB2BUnitConverter" />
+
+    <bean id="batchB2BUnitGroupsConverterMapping"
+          class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.mapping.impl.DefaultConverterMapping"
+          p:mapping="CustomerB2BUnitData" p:converter-ref="batchB2BUnitGroupsConverter" />
+
+    <bean id="batchAddressConverterMapping"
+          class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.mapping.impl.DefaultConverterMapping"
+          p:mapping="CustomerAddressData" p:converter-ref="batchAddressConverter" />
+
+    <bean id="batchCustomerConverterMapping"
+          class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.mapping.impl.DefaultConverterMapping"
+          p:mapping="customerB2BCustomerData" p:converter-ref="batchCustomerConverter" />
+          
+   
+    <!-- B2BUnit data-->
+
+    <bean id="batchB2BUnitConverter" parent="interfaceerrorImpexConverter">
+        <property name="header">
+            <value>#{defaultImpexCustomerHeader}
+                INSERT_UPDATE B2BUnit[$proc];uid[unique=true];active[default=true];name;locName[lang=$lang];userPriceGroup
+            </value>
+        </property>
+        <property name="impexRow">
+            <value>                         ;{+0}            ;{+1}                ;{2} ;{3}                ;{4}</value>
+        </property>
+    </bean>
+
+    <!-- B2BUnit Groups data-->
+
+    <bean id="batchB2BUnitGroupsConverter" parent="interfaceerrorImpexConverter">
+        <property name="header">
+            <value>#{defaultImpexCustomerHeader}
+                INSERT_UPDATE B2BUnit[$proc];uid[unique=true];groups(uid);reportingOrganization(uid)
+            </value>
+        </property>
+        <property name="impexRow">
+            <value>                         ;{+0}            ;{5}       ;{6}</value>
+        </property>
+    </bean>
+
+    <!-- address data-->
+
+    <bean id="batchAddressConverter" parent="interfaceerrorImpexConverter">
+        <property name="header">
+            <value>#{defaultImpexCustomerHeader}
+                $proc=processor=#{interfaceerrorImportProcessorClassName}
+
+                INSERT_UPDATE Address[$proc];code[unique=true];owner(B2BUnit.uid)[unique=true][default='default'];company[default='default'];streetnumber;streetname;postalcode;town;country(isocode);appartment;building;department;district;fax;cellphone;phone1;phone2;contactAddress;shippingAddress;billingAddress;unloadingAddress;firstname;lastname;email;title(code);remarks;url;visibleInAddressBook
+            </value>
+        </property>
+        <property name="impexRow">
+            <value>                         ;{+0}             ;{+1}                          ;{+2}     ;{3}         ;{4}       ;{5}       ;{6} ;{7}             ;{8}       ;{9}     ;{10}       ;{11}   ;{12};{13}    ;{14}  ;{15}  ;{16}          ;{17}           ;{18}          ;{19}            ;{20}    ;{21}    ;{22} ;{23}       ;{24}   ;{25};{26}</value>
+        </property>
+    </bean>
+
+    <!-- B2BCustomer data-->
+		  
+	<bean id="batchCustomerConverter" parent="interfaceerrorImpexConverter">
+		<property name="header">
+			<value>#{defaultImpexCustomerHeader}
+				# Insert Customer
+				$passwordEncoding=md5
+				$defaultPassword=#{configurationService.configuration.getProperty('hotfolder.customers.default.password')}
+				$setName=name[cellDecorator=de.hybris.platform.acceleratorservices.dataimport.batch.decorator.CustomerNameDecorator]
+				$setPassword=@password[translator=de.hybris.platform.impex.jalo.translators.ConvertPlaintextToEncodedUserPasswordTranslator][default='$passwordEncoding:$defaultPassword']
+				INSERT_UPDATE B2BCustomer[$proc];uid[unique=true];description;email;name;title(code);defaultB2BUnit(uid);sessionCurrency(isocode)[default='USD'];$setPassword;groups(uid)[collection-delimiter=','][default='b2bcustomergroup']
+			</value>
+		</property>
+		<property name="impexRow">
+			<value>                             ;{+0}            ;{1}         ;{+2};{3} ;{4}       ;{5}               ;{6}                                    ;              ; {8}</value>
+		</property>
+	</bean>
+</beans>

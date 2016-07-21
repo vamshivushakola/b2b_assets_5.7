@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ [y] hybris Platform
+
+ Copyright (c) 2000-2013 hybris AG
+ All rights reserved.
+
+ This software is the confidential and proprietary information of hybris
+ ("Confidential Information"). You shall not disclose such Confidential
+ Information and shall use it only in accordance with the terms of the
+ license agreement you entered into with hybris.
+-->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:int="http://www.springframework.org/schema/integration"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+           http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd">
+
+    <!-- regex string bean allowing hot-folder to consume reject files
+         set this in the property "filename-regex" of "file:inbound-channel-adapter"
+         i.e. :
+         <file:inbound-channel-adapter id="batchFilesBiomerieuxPrice" directory="#{baseDirectoryBiomerieuxPrice}"
+		    filename-regex="#{fileNameRegexAllowReject}" prevent-duplicates="false">
+		    <int:poller cron="${interfaceerror.hotfolder.price.cron}" />
+	     </file:inbound-channel-adapter>
+    -->
+    <bean id="fileNameRegexAllowReject" class="java.lang.String">
+        <constructor-arg value="^.*-(\d+)(#{T(com.generic.interfaceerror.constants.InterfaceerrorConstants$Logger).REJECT_SUFFIX})?\.csv" />
+    </bean>
+
+
+    <!-- 2) move the file to processing and setup header, partly site dependent -->
+    <!-- logger -->
+    <int:service-activator input-channel="interfaceerrorBatchFilesHeaderInit" output-channel="interfaceerrorBatchFilesHeader" ref="interfaceerrorHeaderInitTask"
+                           method="execute" />
+    <!-- delta -->
+    <int:service-activator input-channel="interfaceerrorDeltaBatchFilesHeaderInit" output-channel="interfaceerrorPriceBatchFilesHeader" ref="interfaceerrorHeaderInitTask"
+                           method="execute" />
+
+    <!--  sequence id parsing for rejects files -->
+    <bean id="interfaceerrorHeaderInitTask" class="de.hybris.platform.acceleratorservices.dataimport.batch.task.HeaderInitTask">
+        <property name="sequenceIdParser">
+            <bean class="de.hybris.platform.acceleratorservices.dataimport.batch.util.SequenceIdParser">
+                <property name="parser">
+                    <bean class="de.hybris.platform.acceleratorservices.util.RegexParser">
+                        <property name="regex" ref="fileNameRegexAllowReject" />
+                    </bean>
+                </property>
+            </bean>
+        </property>
+        <property name="languageParser" ref="batchLanguageParser"/>
+        <property name="fallbackLanguage" value="en" />
+    </bean>
+
+    <!-- 3) transform c*sv to impex file -->
+    <!-- logger -->
+    <int:service-activator input-channel="interfaceerrorBatchFilesHeader" output-channel="interfaceerrorBatchFilesTran" ref="interfaceerrorBatchTransformerTask"
+                           method="execute" />
+    <bean id="interfaceerrorBatchTransformerTask"
+          class="com.generic.interfaceerror.logger.InterfaceerrorTransformerTask"
+          init-method="initConvertersMap">
+        <property name="fieldSeparator" value="#{T(com.generic.interfaceerror.constants.InterfaceerrorConstants$Impex).CSV_FIELD_SEPARATOR}" />
+        <property name="encoding" value="UTF-8" />
+        <property name="linesToSkip" value="0"/>
+        <property name="cleanupHelper" ref="interfaceerrorCleanupHelper"/>
+    </bean>
+
+    <!-- delta -->
+    <int:service-activator input-channel="interfaceerrorPriceBatchFilesHeader" output-channel="interfaceerrorBatchFilesTran" ref="interfaceerrorDeltaPriceBatchTransformerTask"
+                           method="execute" />
+    <bean id="interfaceerrorDeltaPriceBatchTransformerTask" class="com.generic.interfaceerror.delta.DeltaBatchTransformerTask"
+          init-method="initConvertersMap">
+        <property name="fieldSeparator"
+                  value="#{T(com.generic.interfaceerror.constants.InterfaceerrorConstants$Impex).CSV_FIELD_SEPARATOR}"/>
+        <property name="encoding" value="UTF-8"/>
+        <property name="linesToSkip" value="0"/>
+        <property name="cleanupHelper" ref="interfaceerrorCleanupHelper"/>
+        <property name="parser">
+            <bean class="de.hybris.platform.acceleratorservices.util.RegexParser">
+                <property name="regex" value="^PriceData(.*)-.*\.csv" />
+            </bean>
+        </property>
+    </bean>
+
+    <!-- 4) run impex import -->
+    <int:service-activator input-channel="interfaceerrorBatchFilesTran" output-channel="interfaceerrorBatchFilesImp" ref="batchRunnerTask"
+                           method="execute" />
+
+    <!-- 5) Cleanup -->
+    <int:service-activator input-channel="interfaceerrorBatchFilesImp" ref="interfaceerrorBatchCleanupTask" method="execute" />
+    <bean id="interfaceerrorBatchCleanupTask" class="de.hybris.platform.acceleratorservices.dataimport.batch.task.CleanupTask">
+        <property name="cleanupHelper" ref="interfaceerrorCleanupHelper" />
+    </bean>
+    <bean id="interfaceerrorCleanupHelper" class="com.generic.interfaceerror.logger.InterfaceerrorCleanupHelper">
+        <property name="timeStampFormat" value="yyyyMMddHHmmssSSS"/>
+    </bean>
+
+
+
+
+    <!-- custom impex Processor className to be used in -->
+    <bean id="interfaceerrorImportProcessorClassName" class="java.lang.String">
+        <constructor-arg value="com.generic.interfaceerror.logger.InterfaceerrorImportProcessor"/>
+    </bean>
+
+    <bean id="interfaceerrorImpexConverter" class="com.generic.interfaceerror.logger.InterfaceerrorImpexConverter" abstract="true"/>
+
+    <!-- Manage imported file errors   -->
+    <bean id="interfaceerrorErrorManager" class="com.generic.interfaceerror.logger.InterfaceerrorErrorManager" factory-method="valueOf">
+        <constructor-arg value="SINGLETON"/>
+    </bean>
+</beans>

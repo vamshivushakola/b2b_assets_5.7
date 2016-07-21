@@ -1,0 +1,20 @@
+# ImpEx for Importing Products stock levels into Powertools Store
+
+# Macros / Replacement Parameter definitions
+$productCatalog=powertoolsProductCatalog
+$productCatalogName=Powertools Product Catalog
+$catalogVersion=catalogversion(catalog(id[default=$productCatalog]),version[default='Staged'])[unique=true,default=$productCatalog:Staged]
+
+
+INSERT_UPDATE Vendor;code[unique=true];name[lang=en]
+;powertools;Powertools
+
+INSERT_UPDATE Warehouse;code[unique=true];name[lang=en];vendor(code)[default=powertools];default[default=true]
+;pw_warehouse_s;Powertools Warehouse South
+;pw_warehouse_e;Powertools Warehouse East
+;pw_warehouse_w;Powertools Warehouse West
+;pw_warehouse_n;Powertools Warehouse North
+
+INSERT_UPDATE StockLevel;productCode[unique=true];warehouse(code)[unique=true,default=default];available;inStockStatus(code);maxPreOrder[default=1];maxStockLevelHistoryCount[default=-1];overSelling[default=0];preOrder[default=0];reserved[default=0]
+
+INSERT_UPDATE Product;code[unique=true];stockLevels(productCode,warehouse(code));vendors(code)[default=powertools];$catalogVersion

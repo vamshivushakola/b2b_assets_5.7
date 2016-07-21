@@ -1,0 +1,34 @@
+REMOVE MediaFormat  ;qualifier[unique = true]
+;1200Wx1200H
+;515Wx515H
+;365Wx246H
+;300Wx300H
+;96Wx96H
+;65Wx65H
+;30Wx30H
+
+INSERT_UPDATE ConversionMediaFormat ;qualifier[unique = true]   ; name[lang=en]      ; conversion    ; inputFormat(qualifier)  ;mimeType[default=image/jpeg]; conversionStrategy[default=imageMagickMediaConversionStrategy]
+;CMFGeneric                 ; CMFGeneric      ;                  ;                         ;                ;
+;1200Wx1200H                ; 1200Wx1200H     ; -resize 1200x>   ; CMFGeneric              ;                ;
+;515Wx515H                  ; 515Wx515H       ; -resize 515x>    ; 1200Wx1200H             ;                ;
+;365Wx246H                  ; 365Wx246H       ; -resize 365x246> ; 515Wx515H               ;                ;
+;300Wx300H                  ; 300Wx300H       ; -resize 300x>    ; 365Wx246H               ;                ;
+;96Wx96H                    ; 96Wx96H         ; -resize 96x>     ; 300Wx300H               ;                ;
+;65Wx65H                    ; 65Wx65H         ; -resize 65x>     ; 96Wx96H                 ;                ;
+;30Wx30H                    ; 30Wx30H         ; -resize 30x>     ; 65Wx65H                 ;                ;
+
+
+INSERT_UPDATE ConversionGroup   ; code[unique = true]       ; name[lang = en]                                  ; supportedFormats(qualifier);
+; GenTo1200ConversionGroup  ; Conversion from CMFGeneric to 1200               ; 1200Wx1200H
+; 1200To515ConversionGroup  ; Conversion from 1200 to 515                      ; 515Wx515H
+; 515To365onversionGroup    ; Conversion from 515 to 365                       ; 365Wx246H
+; 515To300onversionGroup    ; Conversion from 515 to 300                       ; 300Wx300H
+; 300To96onversionGroup     ; Conversion from 300 to 96                        ; 96Wx96H
+; 96To65ConversionGroup     ; Conversion from 96 to 65                         ; 65Wx65H
+; 65To30onversionGroup      ; Conversion from 65 to 30                         ; 30Wx30H
+
+INSERT_UPDATE MediaConversionCronJob    ; code[unique = true]     ; active              ; sessionLanguage(isocode)  ; includedFormats(qualifier)
+; MediaConversionCronjobSample          ; true ;en                        ; CMFGeneric, 1200Wx1200H, 515Wx515H, 365Wx246H, 300Wx300H, 96Wx96H, 65Wx65H, 30Wx30H ;
+
+INSERT_UPDATE Trigger   ; cronjob(code)[unique = true]  ; second; minute; hour  ; day; month; year  ; relative  ; active; maxAcceptableDelay
+; MediaConversionCronjobSample  ; 0     ; 15    ; -1    ; -1 ; -1   ; -1    ; true      ; true ; -1

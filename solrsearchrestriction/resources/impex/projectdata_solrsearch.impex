@@ -1,0 +1,66 @@
+# Import the Solr configuration for the powertools store
+#
+$productCatalog=powertoolsProductCatalog
+$catalogVersions=catalogVersions(catalog(id),version);
+$serverConfigName=powertoolsSolrServerConfig
+$indexConfigName=powertoolsSolrIndexConfig
+$searchConfigName=powertoolsPageSize
+$facetSearchConfigName=powertoolsIndex
+$facetSearchConfigDescription=Powertools Solr Index
+$searchIndexNamePrefix=powertools
+$solrIndexedType=powertoolsProductType
+$indexBaseSite=powertools
+$indexLanguages=en,de,ja,zh
+$indexCurrencies=USD,CAD
+
+
+#
+# Setup the Solr server, indexer, and search configs
+#
+
+# Create the solr server configuration
+INSERT_UPDATE SolrServerConfig;name[unique=true];mode(code);embeddedMaster
+;$serverConfigName;embedded;true
+
+# Create the solr indexer configuration
+INSERT_UPDATE SolrIndexConfig;name[unique=true];batchSize;numberOfThreads;indexMode(code);
+;$indexConfigName;100;1;TWO_PHASE;
+
+# Create the faceted search configuration
+INSERT_UPDATE SolrSearchConfig;description[unique=true];pageSize
+;$searchConfigName;20
+
+#
+# Setup the indexed types, their properties, and the update queries
+#
+
+# Declare the indexed type Product
+INSERT_UPDATE SolrIndexedType;identifier[unique=true];type(code)
+;$solrIndexedType;Product
+
+
+# Non-facet properties
+INSERT_UPDATE SolrIndexedProperty;solrIndexedType(identifier)[unique=true];name[unique=true];type(code);sortableType(code);currency[default=false];localized[default=false];multiValue[default=false];useForSpellchecking[default=false];useForAutocomplete[default=false];fieldValueProvider;valueProviderParameter
+;$solrIndexedType; grantedB2BUnits    	  ;string      ;       ;    ;    ;true;    ;    ;grantedB2BUnitsValueProvider;
+
+
+INSERT_UPDATE SearchRestriction;code[unique=true];name[lang=en];query;principal(UID);restrictedType(code);active;generate
+;b2bproductvisibility_restriction;Restrict B2B visibility based B2BUnit product visibility;"EXISTS
+(
+{{
+SELECT * FROM
+{
+	Product as prod
+	JOIN ProductB2BUnitLink as link
+	ON {link:product} = {prod:pk}
+	JOIN B2BUnit as unit
+	ON {link:b2bunit} = {unit:pk}
+}
+WHERE ({unit:pk} in (?session.user.groups)
+AND {link:isDisplayable} = true)
+AND {prod:pk} = {item:pk}
+}}
+)
+OR
+({{SELECT count(PK) FROM {ProductB2BUnitLink} WHERE {product} = {item:pk}}}) = 0
+";b2bgroup;Product;true;true

@@ -1,0 +1,7 @@
+# code ; status ; purchaseNumber ; calculated ; currency ; paymentStatus ; paymentMode ; totalTax ; totalDiscount ; totalPrice ; deliveryAdress ; deliveryMode ; deliveryCost ; statusInfo ; deliveryStatus ; ExportStatus ; date ; user ;ERPOrderNumber;Origin;store(uid);unit(uid);site(uid);paymentType(code);guid(code)
+12;CREATED;;0;EUR;;;0.00000000;0.00000000;55.00000000;b2bassets2;premium-net;5.00000000;;;;2015.03.12 12:00:00.000000;gi.sun@pronto-hw.com;;;powertools;ProntoServices;powertools;ACCOUNT;g123
+18;CREATED;;0;USD;;;0.00000000;0.00000000;20.00000000;b2bassets2;premium-net;10.00000000;;;;2015.11.02 14:00:00.000000;gi.sun@pronto-hw.com;;;powertools;ProntoServices;powertools;ACCOUNT;g456
+10;CREATED;;false;USD;;;0;0;54.99;b2bassets2;standard-net;9.99;;;;2015.03.23 05:00:00.000000;gi.sun@pronto-hw.com;;;powertools;ProntoServices;powertools;ACCOUNT;g789
+1001;CREATED;;false;USD;;;0;0;279.99;b2bassets2;standard-net;9.99;;;;2015.03.15 00:00:00.000000;gi.sun@pronto-hw.com;;;powertools;ProntoServices;powertools;ACCOUNT;g321
+13;CREATED;;false;USD;;;0;0;54.99;b2bassets2;standard-net;9.99;;;;2015.02.31 00:00:00.000000;gi.sun@pronto-hw.com;;;powertools;ProntoServices;powertools;ACCOUNT;g213
+16;CREATED;;false;USD;;;0;0;106.99;b2bassets2;premium-net;16.99;;;;2015.04.18 00:00:00.000000;gi.sun@pronto-hw.com;;;powertools;ProntoServices;powertools;ACCOUNT;g426

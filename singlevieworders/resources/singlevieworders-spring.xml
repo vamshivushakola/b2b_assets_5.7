@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ [y] hybris Platform
+
+ Copyright (c) 2000-2015 hybris AG
+ All rights reserved.
+
+ This software is the confidential and proprietary information of hybris
+ ("Confidential Information"). You shall not disclose such Confidential
+ Information and shall use it only in accordance with the terms of the
+ license agreement you entered into with hybris.
+-->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/aop
+           http://www.springframework.org/schema/aop/spring-aop.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context.xsd">
+           
+    <context:annotation-config/> 
+	<import resource="classpath:/singlevieworders/integration/hot-folder-ordertracking-spring.xml"/>
+	
+	 <bean id="singleviewordersCoreDataImportedEventListener" parent="abstractCoreDataImportedEventListener">
+		<property name="supportedChannels">
+			<list value-type="de.hybris.platform.commerceservices.enums.SiteChannel">
+				<value>B2C</value>
+				
+								<value>B2B</value>
+				
+			</list>
+		</property>
+		<property name="addonExtensionMetadata">
+			<bean class="de.hybris.platform.addonsupport.data.AddonExtensionMetadata">
+				<property name="suffixChannel" value="false"/>
+				<property name="baseExtensionName" value="singlevieworders"/>
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="singleviewordersSampleDataEventListener" parent="abstractGenericAddOnSampleDataEventListener"  >
+		<property name="extensionName" value="singlevieworders" />
+	</bean>
+	
+	<!-- Single View Order Related Changes -->
+	<alias name="defaultSingleViewOrdersCustomerAccountDao" alias="customerAccountDao"/>
+	<bean id="defaultSingleViewOrdersCustomerAccountDao" class="com.generic.singlevieworders.daos.impl.B2BAssetsCustomerAccountDao" parent="defaultCustomerAccountDao" >
+	</bean>
+
+
+	
+	<alias name="b2bAssetsCustomerAccountService" alias="customerAccountService"/>
+	<bean id="b2bAssetsCustomerAccountService" class="com.generic.singlevieworders.services.impl.B2BAssetsCustomerAccountService"
+		parent="defaultCustomerAccountService">
+		<property name="b2BUnitService" ref="b2bUnitService"/>		
+		<property name="customerAccountDao" ref="customerAccountDao"/>		
+	</bean>
+	
+	<alias name="B2BAssetsB2BOrderHistoryPopulator" alias="b2bOrderHistoryPopulator" />
+	<bean id="B2BAssetsB2BOrderHistoryPopulator" class="com.generic.singlevieworders.order.populators.B2BAssetsB2BOrderHistoryPopulator" parent="defaultB2BOrderHistoryPopulator">
+		<!-- <property name="b2BPermissionResultConverter" ref="b2bPermissionResultConverter"/>
+		<property name="principalConverter" ref="principalConverter"/>
+		<property name="workflowActionService" ref="workflowActionService"/> -->
+	</bean>
+	
+	<!--  <alias name="defaultB2BAssetsCheckoutFlowFacade" alias="b2bCheckoutFlowFacade"/>
+	<bean id="defaultB2BAssetsCheckoutFlowFacade"
+		  class="com.generic.singlevieworders.order.facades.flow.impl.DefaultB2BAssetsCheckoutFlowFacade"
+		  parent="defaultB2BCheckoutFlowFacade">
+		<property name="checkoutFlowStrategy" ref="b2bCheckoutFlowStrategy"/>
+		<property name="checkoutPciStrategy" ref="b2bCheckoutPciStrategy"/>
+		<property name="b2BUnitService" ref="b2bUnitService"/>
+	</bean>  -->
+	
+	 <!-- Override b2bCheckoutFacade -->
+	<alias name="defaultB2BAssetsCheckoutFacade" alias="b2bCheckoutFacade"/>
+	<bean id="defaultB2BAssetsCheckoutFacade" class="com.generic.singlevieworders.order.facades.flow.impl.DefaultB2BAssetsCheckoutFacade" parent="defaultB2BCheckoutFacade">
+		<property name="b2BUnitService" ref="b2bUnitService"/>
+	</bean>
+	
+		
+	<alias name="defaultB2BOrderEntryPopulator" alias="orderEntryPopulator"/>
+	<bean id="defaultB2BOrderEntryPopulator"
+			class="com.generic.singlevieworders.order.populator.B2BOrderEntryPopulator" parent="defaultOrderEntryPopulator">
+		<property name="productConverter" ref="orderEntryProductConverter"/>
+		<property name="priceDataFactory" ref="priceDataFactory"/>
+		<property name="entryOrderChecker" ref="commerceOrderEntryModifiableChecker"/>
+		<property name="deliveryModeConverter" ref="deliveryModeConverter"/>
+		<property name="pointOfServiceConverter" ref="pointOfServiceConverter"/>
+	</bean>
+
+</beans>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+ [y] hybris Platform
+
+ Copyright (c) 2000-2013 hybris AG
+ All rights reserved.
+
+ This software is the confidential and proprietary information of hybris
+ ("Confidential Information"). You shall not disclose such Confidential
+ Information and shall use it only in accordance with the terms of the
+ license agreement you entered into with hybris.
+
+  
+-->
+<configuration xmlns="hybris.de/schemas/hmc/generic"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="hybris.de/schemas/hmc/generic hmc.xsd">
+
+    <!-- Configuration for extension multicarts -->
+    <explorertree>
+        <group name="multicartsgroup">
+            <!--<externalnode classname="com.generic.multicarts.hmc.MulticartsTreeLeafChip"/>-->
+            <typeref type="Cart"/>
+        </group>
+    </explorertree>
+
+    <type name="Cart" mode="append">
+        <organizer>
+            <search mode="replace">
+                <condition attribute="code"></condition>
+                <condition attribute="name"></condition>
+                <condition attribute="user"></condition>
+            </search>
+            <result>
+                <listview mode="replace">
+                    <itemlayout>
+                        <attribute name="name"/>
+                        <attribute name="user"/>
+                        <attribute name="code"/>
+                    </itemlayout>
+                </listview>
+            </result>
+            <editor>
+                <essentials>
+                    <listlayout>
+                        <attribute name="code"/>
+                    </listlayout>
+                </essentials>
+                <tab name="tab.cart.share">
+                    <section name="section.cart.sharewith">
+                        <listlayout>
+                            <attribute name="shares" width="500">
+                                <referencecollectioneditor>
+                                    <itemlayout>
+                                        <attribute name="group" width="100"/>
+                                        <attribute name="cart" width="100"/>
+                                    </itemlayout>
+                                </referencecollectioneditor>
+                            </attribute>
+                        </listlayout>
+
+                    </section>
+
+                    <section name="section.cart.follower">
+                        <listlayout>
+                            <attribute name="followers" width="500">
+                                <referencecollectioneditor>
+                                    <itemlayout>
+                                        <attribute name="user" width="100"/>
+                                        <attribute name="cart" width="100"/>
+                                    </itemlayout>
+                                </referencecollectioneditor>
+                            </attribute>
+                        </listlayout>
+
+                    </section>
+                </tab>
+            </editor>
+        </organizer>
+    </type>
+</configuration>

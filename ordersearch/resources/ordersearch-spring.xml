@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ [y] hybris Platform
+
+ Copyright (c) 2000-2013 hybris AG
+ All rights reserved.
+
+ This software is the confidential and proprietary information of hybris
+ ("Confidential Information"). You shall not disclose such Confidential
+ Information and shall use it only in accordance with the terms of the
+ license agreement you entered into with hybris.
+-->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+    <bean id="orderSearchEntryValueProvider" class="com.generic.ordersearch.provider.OrderSearchEntryValueProvider" >
+        <property name="fieldNameProvider" ref="solrFieldNameProvider"/>
+    </bean>
+
+    <bean id="orderSearchTypeValueProvider" class="com.generic.ordersearch.provider.OrderSearchTypeValueProvider" >
+        <property name="fieldNameProvider" ref="solrFieldNameProvider"/>
+    </bean>
+    
+   <bean id="orderSearchNameValueProvider" class="com.generic.ordersearch.provider.OrderSearchNameValueProvider" >
+        <property name="fieldNameProvider" ref="solrFieldNameProvider"/>
+    </bean> 
+    
+    <bean id="orderSearchUserValueProvider" class="com.generic.ordersearch.provider.OrderSearchUserValueProvider" >
+        <property name="fieldNameProvider" ref="solrFieldNameProvider"/>
+    </bean>
+    
+    <bean id="orderSearchDateValueProvider" class="com.generic.ordersearch.provider.OrderSearchDateValueProvider" >
+        <property name="fieldNameProvider" ref="solrFieldNameProvider"/>
+    </bean>
+    
+     <bean id="orderSearchB2BUnitValueProvider" class="com.generic.ordersearch.provider.OrderSearchB2BUnitValueProvider" >
+        <property name="fieldNameProvider" ref="solrFieldNameProvider"/>
+    </bean>
+	
+	<bean id="orderSearchVersionValueProvider" class="com.generic.ordersearch.provider.OrderSearchVersionValueProvider" >
+        <property name="fieldNameProvider" ref="solrFieldNameProvider"/>
+    </bean>
+
+	<alias name="defaultOrderSearchFacade" alias="orderSearchFacade" />
+    <bean id="defaultOrderSearchFacade" class="com.generic.ordersearch.facade.impl.DefaultOrderSearchFacadeImpl">
+        <property name="fieldsList">
+            <list>
+                <value>code</value>
+                <value>user</value>
+                <value>creation_date</value>
+                <!-- <value>name</value> -->
+                <value>product_id</value>
+            </list>
+        </property>
+    </bean>
+    
+    
+	<alias name="orderSearchFacetSearchService" alias="orderSearchFacetSearchService" />
+    <bean id="orderSearchFacetSearchService" class="com.generic.ordersearch.service.impl.OrderSearchFacetSearchService"
+          parent="defaultFacetSearchService">
+    </bean>
+    
+
+
+    <alias name="defaultOrderSearchQueryPageableConverter" alias="orderSearchQueryPageableConverter"/>
+    <bean id="defaultOrderSearchQueryPageableConverter" parent="abstractPopulatingConverter">
+        <lookup-method name="createTarget" bean="solrSearchRequest"/>
+        <property name="populators">
+            <list>
+                <ref bean="customOrderSearchSolrQueryPopulator"/>
+                <ref bean="commerceSearchPagePopulator"/>
+                <ref bean="commerceSearchSortPopulator"/>
+                <ref bean="orderSearchQueryPopulator"/>
+                <ref bean="commerceSearchFiltersPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultOrderSolrSearchResponseConverter" alias="orderSolrSearchResponseConverter"/>
+    <bean id="defaultOrderSolrSearchResponseConverter" parent="abstractPopulatingConverter">
+        <lookup-method name="createTarget" bean="orderFacetSearchPageData"/>
+        <property name="populators">
+            <list>
+                <ref bean="commerceSearchResponsePaginationPopulator"/>
+                <ref bean="commerceSearchResponseSortsPopulator"/>
+                <ref bean="orderSearchResultsPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="orderFacetSearchPageData"
+          class="de.hybris.platform.commerceservices.search.facetdata.FacetSearchPageData" scope="prototype"/>
+
+    <alias name="defaultOrderSearchQueryPopulator" alias="orderSearchQueryPopulator"/>
+    <bean id="defaultOrderSearchQueryPopulator"
+          class="com.generic.ordersearch.converters.populator.OrderSearchQueryPopulator" />
+
+
+    <alias name="defaultCustomOrderSearchSolrQueryPopulator" alias="customOrderSearchSolrQueryPopulator"/>
+    <bean id="defaultCustomOrderSearchSolrQueryPopulator"
+          class="com.generic.ordersearch.converters.populator.OrderSearchSolrQueryPopulator"
+          parent="defaultCommerceSearchSolrQueryPopulator" >
+        <property name="indexedTypeName">
+            <value>AbstractOrder</value>
+        </property>
+        <property name="facetSearchService" ref="facetSearchService" />
+        
+    </bean>
+
+
+    <!--  Populators converters -->
+    <alias name="defaultOrderSearchRequestConverter" alias="orderSearchRequestConverter"/>
+    <bean id="defaultOrderSearchRequestConverter" parent="abstractPopulatingConverter">
+        <lookup-method name="createTarget"  bean="solrSearchResponse"/>
+        <property name="populators">
+            <list>
+                <ref bean="orderSearchRequestPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultOrderSearchRequestPopulator" alias="orderSearchRequestPopulator"/>
+    <bean id="defaultOrderSearchRequestPopulator"
+          class="com.generic.ordersearch.converters.populator.OrderSearchRequestPopulator">
+    </bean>
+
+    <alias name="defaultOrderSearchResultsPopulator" alias="orderSearchResultsPopulator"/>
+    <bean id="defaultOrderSearchResultsPopulator"
+          class="com.generic.ordersearch.converters.populator.OrderSearchResultsPopulator">
+    </bean>
+
+
+    <bean parent="modifyPopulatorList">
+		<property name="list" ref="defaultOrderSearchQueryPageableConverter"/>
+		<property name="add" ref="conditionalSortFilteringIndexedTypePopulator"/>
+	</bean>
+
+	<bean parent="modifyPopulatorList">
+		<property name="list" ref="defaultOrderSearchQueryPageableConverter"/>
+		<property name="add" ref="facetReconfigurationPopulator"/>
+	</bean>
+    <!-- Identity provider -->
+    <bean id="abstractOrderIdentityProvider" class="com.generic.ordersearch.provider.AbstractOrderIdentityProvider"/>
+    
+    <!-- Solr Index adding Product Type -->
+    <alias name="defaultB2BAssetsCommerceSearchSolrQueryPopulator" alias="commerceSearchSolrQueryPopulator" />
+       <bean id="defaultB2BAssetsCommerceSearchSolrQueryPopulator" class="com.generic.ordersearch.converters.populator.B2BAssetsProductSearchSolrQueryPopulator" parent="defaultCommerceSearchSolrQueryPopulator">
+            <property name="indexedTypeName">
+            	<value>Product</value>
+        	</property>
+       </bean>
+       
+	<alias name="defaultFacetSearchStrategyFactory" alias="facetSearchStrategyFactory" />
+	<bean id="defaultFacetSearchStrategyFactory" class="de.hybris.platform.solrfacetsearch.search.impl.DefaultFacetSearchStrategyFactory">
+		<property name="defaultFacetSearchStrategy" ref="defaultFacetSearchStrategy" />
+		<property name="legacyFacetSearchStrategy" ref="defaultB2BAssetsFacetSearchStrategy" />
+	</bean>
+	
+    <bean id="defaultB2BAssetsFacetSearchStrategy" class="com.generic.ordersearch.service.impl.DefaultB2BAssetsFacetSearchStrategy"
+		parent="legacyFacetSearchStrategy">
+			<property name="solrService" ref="solrService" />
+			<property name="searchQueryCatalogVersionsResolver" ref="searchQueryCatalogVersionsResolver" />
+	</bean>	
+</beans>

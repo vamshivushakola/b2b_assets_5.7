@@ -1,0 +1,2 @@
+commit.comment.template=[t\:${task.key} - ${task.description}] ${task.notes}
+eclipse.preferences.version=1

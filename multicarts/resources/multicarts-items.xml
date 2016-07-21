@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+ [y] hybris Platform
+
+ Copyright (c) 2000-2013 hybris AG
+ All rights reserved.
+
+ This software is the confidential and proprietary information of hybris
+ ("Confidential Information"). You shall not disclose such Confidential
+ Information and shall use it only in accordance with the terms of the
+ license agreement you entered into with hybris.
+-->
+
+<items 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+			xsi:noNamespaceSchemaLocation="items.xsd">
+
+    <relations>
+
+        <relation code="User2CartLogRelation"
+                  localized="false" generate="true" autocreate="true">
+            <sourceElement type="User" qualifier="user" cardinality="one"/>
+            <targetElement type="CartLog" qualifier="cartlogs" cardinality="many"/>
+        </relation>
+
+        <relation code="Product2CartLogRelation"
+                  localized="false" generate="true" autocreate="true">
+            <sourceElement type="Product" qualifier="product" cardinality="one"/>
+            <targetElement type="CartLog" qualifier="logs" cardinality="many"/>
+        </relation>
+
+
+        <relation code="Cart2CartFollowerRelation"
+                  localized="false" generate="true" autocreate="true">
+            <sourceElement type="Cart" qualifier="cart" cardinality="one"/>
+            <targetElement type="CartFollower" qualifier="followers" cardinality="many"/>
+        </relation>
+
+        <relation code="User2CartFollowerRelation"
+                  localized="false" generate="true" autocreate="true">
+            <sourceElement type="User" qualifier="user" cardinality="one"/>
+            <targetElement type="CartFollower" qualifier="followers" cardinality="many"/>
+        </relation>
+
+
+        <relation code="Cart2CartShareRelation"
+                  localized="false" generate="true" autocreate="true">
+            <sourceElement type="Cart" qualifier="cartSharePK" cardinality="one"/>
+            <targetElement type="CartShare" qualifier="shares" cardinality="many"/>
+        </relation>
+
+        <relation code="UserGroup2CartShareRelation"
+                  localized="false" generate="true" autocreate="true">
+            <sourceElement type="UserGroup" qualifier="group" cardinality="one"/>
+            <targetElement type="CartShare" qualifier="shares" cardinality="many"/>
+        </relation>
+    </relations>
+
+	<itemtypes>
+        <itemtype   code="User" generate="false" autocreate="false">
+             <attributes>
+                 <attribute qualifier="hasNotification" type="java.lang.Boolean" generate="true">
+                     <persistence type="property"/>
+                     <modifiers read="true" write="true" optional="true" initial="true"/>
+                     <defaultvalue>false</defaultvalue>
+                 </attribute>
+             </attributes>
+         </itemtype>
+
+    <itemtype code="AbstractOrder" generate="false" autocreate="false">
+    	<attributes>
+    	      <attribute qualifier="multicartName" type="java.lang.String" generate="true">
+                    <persistence type="property"/>
+                    <modifiers read="true" write="true" optional="true" initial="true"/>
+                </attribute>
+    	</attributes>
+    </itemtype>
+
+     <itemtype   code="Cart" generate="false" autocreate="false">
+            <attributes>
+          
+                <attribute qualifier="isOwner" type="java.lang.Boolean" >
+                    <persistence type="dynamic" attributeHandler="cartIsOwnerAttributeHandler"/>
+                    <modifiers read="true" write="false"/>
+                </attribute>
+
+                <attribute qualifier="isShared" type="java.lang.Boolean" >
+                    <persistence type="dynamic" attributeHandler="cartIsSharedAttributeHandler"/>
+                    <modifiers read="true" write="false"/>
+                </attribute>
+
+                <attribute qualifier="hasNotification" type="java.lang.Boolean" >
+                    <persistence type="dynamic" attributeHandler="cartNotificationAttributeHandler"/>
+                    <modifiers read="true" write="false"/>
+                </attribute>
+
+                <attribute qualifier="follower" type="CartFollower" >
+                    <persistence type="dynamic" attributeHandler="cartFollowerAttributeHandler"/>
+                    <modifiers read="true" write="false"/>
+                </attribute>
+
+                <attribute qualifier="persist" type="java.lang.Boolean" generate="true">
+                    <persistence type="property"/>
+                    <modifiers read="true" write="true" optional="true" initial="true"/>
+                    <defaultvalue>false</defaultvalue>
+                </attribute>
+            </attributes>
+        </itemtype>
+
+        <itemtype code="CartLog" extends="GenericItem">
+            <deployment table="CartLog_deployment" typecode="32601"/>
+            <attributes>
+                <attribute qualifier="message" type="java.lang.String">
+                    <persistence type="property"/>
+                    <modifiers read="true" write="true" />
+                </attribute>
+
+                <attribute qualifier="orderCode" type="java.lang.String" generate="true">
+                    <persistence type="property"/>
+                    <modifiers read="true" write="true" initial="true"/>
+                </attribute>
+
+                <attribute qualifier="oldValue" type="java.lang.String" generate="true">
+                    <persistence type="property"/>
+                    <modifiers read="true" write="true" initial="true"/>
+                </attribute>
+
+                <attribute qualifier="newValue" type="java.lang.String" generate="true">
+                    <persistence type="property"/>
+                    <modifiers read="true" write="true" initial="true"/>
+                </attribute>
+            </attributes>
+
+        </itemtype>
+
+        <itemtype code="CartFollower" generate="true" autocreate="true">
+       	 	<!--Deepali: added for 5.7.0.0 migration -->
+         	<deployment table="CartFollower_deployment" typecode="32602"/>
+         	<!-- ends -->
+            <attributes>
+                <attribute qualifier="notification" type="java.lang.Boolean" generate="true">
+                    <persistence type="property"/>
+                    <modifiers read="true" write="true" initial="true"/>
+                    <defaultvalue>false</defaultvalue>
+                </attribute>
+            </attributes>
+        </itemtype>
+
+        <itemtype code="CartShare" generate="true" autocreate="true">
+			<!--Deepali: added for 5.7.0.0 migration -->
+         	<deployment table="CartShare_deployment" typecode="32603"/>
+         	<!-- ends -->
+        </itemtype>
+
+        <!-- Components -->
+        <itemtype code="SelectCartComponent" autocreate="true" generate="true" extends="CMSParagraphComponent">
+        </itemtype>
+	</itemtypes>
+</items>

@@ -1,0 +1,7 @@
+
+quickorder.application-context=quickorder-spring.xml
+
+quickorder.css.paths.desktop=/desktop/common/css/quickorder.css
+quickorder.javascript.paths.desktop=/desktop/common/js/quickorder.js
+#yb2bacceleratorstorefront.additionalWebSpringConfigs.quickorder=classpath:/quickorder/web/spring/quickorder-web-spring.xml
+b2bassetsstorefront.additionalWebSpringConfigs.quickorder=classpath:/quickorder/web/spring/quickorder-web-spring.xml
